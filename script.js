@@ -50,6 +50,9 @@ db.ref('messages').on('child_added', function(snapshot) {
     const msgElement = document.createElement('div');
     msgElement.textContent = msgData.message;
 
+    // Add message ID to the element to allow easy removal later
+    msgElement.setAttribute('data-id', snapshot.key);
+
     // Set different style for sender and receiver
     if (msgData.isSender) {
         msgElement.classList.add('my-message'); // Message from the current user
@@ -76,11 +79,9 @@ clearAllButton.addEventListener('click', () => {
 // Listen for message removal
 db.ref('messages').on('child_removed', function(snapshot) {
     const messageId = snapshot.key; // Lấy key của tin nhắn đã xóa
-    const msgElements = chatBox.querySelectorAll('div[data-id]');
-
-    msgElements.forEach((msgElement) => {
-        if (msgElement.getAttribute('data-id') === messageId) {
-            msgElement.remove(); // Xóa tin nhắn khỏi giao diện người dùng
-        }
-    });
+    const msgElement = chatBox.querySelector(`div[data-id="${messageId}"]`);
+    
+    if (msgElement) {
+        msgElement.remove(); // Xóa tin nhắn khỏi giao diện người dùng
+    }
 });
