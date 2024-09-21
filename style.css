@@ -31,7 +31,7 @@ body {
     font-size: 16px; /* Tăng kích thước chữ cho input */
 }
 
-#send-btn {
+#send-btn, #clear-all-btn { /* Style cho cả hai nút */
     padding: 10px;
     background-color: #28a745;
     color: white;
@@ -39,10 +39,20 @@ body {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px; /* Tăng kích thước chữ cho nút Send */
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+#clear-all-btn { /* Style riêng cho nút Xóa tất cả */
+    background-color: #dc3545;
 }
 
 #send-btn:hover {
     background-color: #218838;
+}
+
+#clear-all-btn:hover {
+    background-color: #c82333;
 }
 
 #chat-box button {
