@@ -24,8 +24,9 @@ const clearAllButton = document.getElementById('clear-all-btn');
 function getUsername() {
     let username = localStorage.getItem('username');
     if (!username) {
-        username = prompt("Nhập tên của bạn:"); // Yêu cầu người dùng nhập tên nếu chưa có trong localStorage
-        localStorage.setItem('username', username); // Lưu tên người dùng vào localStorage
+        // Chỉ hiện prompt nếu username chưa tồn tại trong localStorage
+        username = prompt("Nhập tên của bạn:") || "Khách"; // Nếu người dùng bấm 'Cancel' hoặc để trống, đặt tên mặc định là "Khách"
+        localStorage.setItem('username', username); // Lưu tên vào localStorage
     }
     return username;
 }
