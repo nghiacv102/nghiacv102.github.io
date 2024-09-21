@@ -10,7 +10,7 @@ body {
 }
 
 #chat-container {
-    width: 400px; /* Increase width of chat container */
+    width: 400px;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
@@ -18,7 +18,7 @@ body {
 }
 
 #chat-box {
-    height: 400px; /* Increase height to display more messages */
+    height: 400px;
     border: 1px solid #ddd;
     margin-bottom: 10px;
     overflow-y: auto;
@@ -58,31 +58,31 @@ body {
 
 /* CSS for your messages (Sender) */
 .my-message {
-    background-color: #d1e7dd; /* Greenish background for your message */
+    background-color: #d1e7dd;
     padding: 10px;
     border-radius: 10px;
     margin: 5px 0;
-    text-align: right; /* Right-align your messages */
-    margin-left: auto; /* Align to right */
+    text-align: right;
+    margin-left: auto;
     max-width: 70%;
     clear: both;
-    color: #333; /* Text color */
+    color: #333;
 }
 
 /* CSS for other people's messages (Receiver) */
 .other-message {
-    background-color: #f8d7da; /* Pinkish background for other people's message */
+    background-color: #f8d7da;
     padding: 10px;
     border-radius: 10px;
     margin: 5px 0;
-    text-align: left; /* Left-align others' messages */
-    margin-right: auto; /* Align to left */
+    text-align: left;
+    margin-right: auto;
     max-width: 70%;
     clear: both;
-    color: #333; /* Text color */
+    color: #333;
 }
 
-/* Scrollable chat-box style */
+/* Custom scrollbar */
 #chat-box::-webkit-scrollbar {
     width: 8px;
 }
