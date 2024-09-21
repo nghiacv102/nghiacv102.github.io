@@ -18,6 +18,7 @@ const db = firebase.database(); // Initialize Realtime Database
 const chatBox = document.getElementById('chat-box');
 const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
+const clearAllButton = document.getElementById('clear-all-btn'); // Nút xóa tất cả
 
 // Send message to Firebase
 sendButton.addEventListener('click', () => {
@@ -40,6 +41,7 @@ db.ref('messages').on('child_added', function(snapshot) {
     // Create message element
     const msgElement = document.createElement('div');
     msgElement.textContent = msgData.message;
+    msgElement.dataset.key = msgKey;  // Set a data attribute with the message key
 
     // Create delete button
     const deleteButton = document.createElement('button');
@@ -67,4 +69,10 @@ db.ref('messages').on('child_removed', function(snapshot) {
             chatBox.removeChild(msgElement);
         }
     });
+});
+
+// Clear all messages when 'Clear All' button is clicked
+clearAllButton.addEventListener('click', () => {
+    // Remove all messages from Firebase
+    db.ref('messages').remove();
 });
