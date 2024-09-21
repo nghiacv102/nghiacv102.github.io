@@ -46,6 +46,11 @@ db.ref('messages').on('child_added', function(snapshot) {
 
 // Clear all messages when 'Clear All' button is clicked
 clearAllButton.addEventListener('click', () => {
-    // Remove all messages from Firebase
-    db.ref('messages').remove();
+    db.ref('messages').remove() // Remove all messages from Firebase
+      .then(() => {
+          chatBox.innerHTML = ''; // Clear chat box in UI after successful deletion
+      })
+      .catch((error) => {
+          console.error("Error deleting messages:", error);
+      });
 });
