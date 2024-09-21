@@ -20,14 +20,15 @@ const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn'); // Nút xóa tất cả
 
-// Send message to Firebase
+// Function to send message
 function sendMessage() {
     const message = messageInput.value;
     if (message) {
         const messageRef = db.ref('messages').push();
         messageRef.set({
             message: message,
-            timestamp: Date.now()  // Thêm timestamp cho từng tin nhắn
+            timestamp: Date.now(),
+            isSender: true // Set true if the message is sent by this user
         });
         messageInput.value = ''; // Clear input after sending
     }
@@ -49,8 +50,12 @@ db.ref('messages').on('child_added', function(snapshot) {
     const msgElement = document.createElement('div');
     msgElement.textContent = msgData.message;
 
-    // Set a unique ID for each message for easier removal
-    msgElement.setAttribute('data-id', snapshot.key); // Lưu key của tin nhắn
+    // Set different style for sender and receiver
+    if (msgData.isSender) {
+        msgElement.classList.add('my-message'); // Message from the current user
+    } else {
+        msgElement.classList.add('other-message'); // Message from others
+    }
 
     // Append message to chat box
     chatBox.appendChild(msgElement);
