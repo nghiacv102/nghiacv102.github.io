@@ -23,7 +23,8 @@ const sendButton = document.getElementById('send-btn');
 sendButton.addEventListener('click', () => {
     const message = messageInput.value;
     if (message) {
-        db.ref('messages').push().set({
+        const messageRef = db.ref('messages').push();
+        messageRef.set({
             message: message,
             timestamp: Date.now()  // Thêm timestamp cho từng tin nhắn
         });
@@ -33,9 +34,37 @@ sendButton.addEventListener('click', () => {
 
 // Listen for new messages from Firebase
 db.ref('messages').on('child_added', function(snapshot) {
-    const msg = snapshot.val().message;
+    const msgData = snapshot.val();
+    const msgKey = snapshot.key;
+
+    // Create message element
     const msgElement = document.createElement('div');
-    msgElement.textContent = msg;
+    msgElement.textContent = msgData.message;
+
+    // Create delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = "Xóa";
+    deleteButton.style.marginLeft = "10px"; // Add some space between the message and the button
+    deleteButton.addEventListener('click', function() {
+        // Delete message from Firebase
+        db.ref('messages/' + msgKey).remove();
+    });
+
+    // Append message and delete button to chat box
+    msgElement.appendChild(deleteButton);
     chatBox.appendChild(msgElement);
     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+});
+
+// Listen for message removal from Firebase
+db.ref('messages').on('child_removed', function(snapshot) {
+    const msgKey = snapshot.key;
+
+    // Find and remove the message from the chat box
+    const messages = chatBox.childNodes;
+    messages.forEach(function(msgElement) {
+        if (msgElement.dataset.key === msgKey) {
+            chatBox.removeChild(msgElement);
+        }
+    });
 });
