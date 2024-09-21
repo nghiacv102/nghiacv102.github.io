@@ -24,7 +24,7 @@ const clearAllButton = document.getElementById('clear-all-btn');
 function getUsername() {
     let username = localStorage.getItem('username');
     if (!username) {
-        username = prompt("Nhập tên của bạn:");
+        username = prompt("Nghia");
         localStorage.setItem('username', username); // Save the username in localStorage
     }
     return username;
