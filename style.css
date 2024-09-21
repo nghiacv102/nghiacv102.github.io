@@ -1,3 +1,4 @@
+/* Basic styling */
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -21,14 +22,12 @@ body {
     border: 1px solid #ddd;
     margin-bottom: 10px;
     overflow-y: auto;
-    padding: 5px;
-    background-color: #f9f9f9;
+    padding: 10px;
 }
 
 #message {
-    width: calc(100% - 70px);
+    width: calc(100% - 80px);
     padding: 10px;
-    margin-right: 10px;
 }
 
 #send-btn {
@@ -39,36 +38,33 @@ body {
     cursor: pointer;
 }
 
+/* Styling for my message */
+.my-message {
+    text-align: left;
+    background-color: #d1f8ff;
+    color: black;
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin: 5px 0;
+    width: fit-content;
+}
+
+/* Styling for other person's message */
+.other-message {
+    text-align: right;
+    background-color: #ffe6e6;
+    color: black;
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin: 5px 0;
+    width: fit-content;
+    margin-left: auto;
+}
+
 #clear-all-btn {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #dc3545;
+    padding: 8px 12px;
+    background-color: #ff4d4d;
     color: white;
     border: none;
     cursor: pointer;
-    width: 100%;
-}
-
-/* Tin nhắn của bạn */
-.my-message {
-    background-color: #daf7a6;
-    margin-left: auto;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    width: fit-content;
-    max-width: 60%;
-    text-align: right;
-}
-
-/* Tin nhắn của người đối diện */
-.other-message {
-    background-color: #a6daf7;
-    margin-right: auto;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    width: fit-content;
-    max-width: 60%;
-    text-align: left;
 }
