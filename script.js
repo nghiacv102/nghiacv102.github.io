@@ -20,18 +20,9 @@ const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 
-// Function to get or set username
-function getUsername() {
-    let username = localStorage.getItem('username');
-    if (!username) {
-        // Chỉ hiện prompt nếu username chưa tồn tại trong localStorage
-        username = prompt("Nhập tên của bạn:") || "Anhhh"; // Nếu người dùng bấm 'Cancel' hoặc để trống, đặt tên mặc định là "Khách"
-        localStorage.setItem('username', username); // Lưu tên vào localStorage
-    }
-    return username;
-}
-
-const username = getUsername(); // Get username from localStorage or prompt if not set
+// Default usernames
+const username = "Anhhh"; // Your default name
+const otherUsername = "Emmm"; // Other user's name
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -57,7 +48,7 @@ function convertEmoticonsToEmoji(message) {
     };
 
     // Replace text emoticons with corresponding emoji
-    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(|:\)/g, function(match) {
+    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, function(match) {
         return emoticonsMap[match] || match;
     });
 }
@@ -92,8 +83,6 @@ messageInput.addEventListener('keypress', (event) => {
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
-    msgElement.setAttribute('data-id', snapshot.key); // Gán data-id cho mỗi tin nhắn
-
     const senderElement = document.createElement('strong'); // Phần tên người gửi
     senderElement.textContent = msgData.senderName + ': ';
     msgElement.appendChild(senderElement);
