@@ -18,11 +18,10 @@ const db = firebase.database(); // Initialize Realtime Database
 const chatBox = document.getElementById('chat-box');
 const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
-const clearAllButton = document.getElementById('clear-all-btn'); // Nút xóa tất cả
+const clearAllButton = document.getElementById('clear-all-btn');
 
-// User Names (Set your name and opponent's name here)
-const myName = "Me";
-const otherName = "My Love";
+// Get username (thay đổi tên tại đây nếu cần)
+const username = prompt("Nhập tên của bạn:");
 
 // Function to send message
 function sendMessage() {
@@ -32,8 +31,8 @@ function sendMessage() {
         messageRef.set({
             message: message,
             timestamp: Date.now(),
-            isSender: true, // Set true if the message is sent by this user
-            senderName: myName // Include sender's name
+            senderName: username, // Thêm tên người gửi
+            isSender: true // Gắn cờ để biết tin nhắn này của ai
         });
         messageInput.value = ''; // Clear input after sending
     }
@@ -53,21 +52,19 @@ messageInput.addEventListener('keypress', (event) => {
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
-    const nameElement = document.createElement('strong');
-    
-    // Add name to the message
-    nameElement.textContent = msgData.senderName + ": ";
-    msgElement.appendChild(nameElement);
+    const senderElement = document.createElement('strong'); // Phần tên người gửi
+    senderElement.textContent = msgData.senderName + ': ';
+    msgElement.appendChild(senderElement);
 
-    // Add message text
-    msgElement.append(msgData.message);
+    const messageContent = document.createElement('span');
+    messageContent.textContent = msgData.message;
+    msgElement.appendChild(messageContent);
 
     // Set different style for sender and receiver
-    if (msgData.isSender) {
+    if (msgData.senderName === username) {
         msgElement.classList.add('my-message'); // Message from the current user
     } else {
         msgElement.classList.add('other-message'); // Message from others
-        nameElement.textContent = otherName + ": "; // Show other person's name for their messages
     }
 
     // Append message to chat box
