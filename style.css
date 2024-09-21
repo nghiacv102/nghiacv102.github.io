@@ -9,7 +9,7 @@ body {
 }
 
 #chat-container {
-    width: 300px;
+    width: 500px; /* Tăng chiều rộng của hộp chat */
     background-color: white;
     padding: 20px;
     border-radius: 10px;
@@ -17,21 +17,18 @@ body {
 }
 
 #chat-box {
-    height: 300px;
+    height: 500px; /* Tăng chiều cao của hộp chat để hiển thị nhiều tin nhắn hơn */
     border: 1px solid #ddd;
     margin-bottom: 10px;
     overflow-y: auto;
-    padding: 5px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
+    padding: 10px; /* Tăng khoảng cách trong hộp chat */
+    font-size: 16px; /* Tăng kích thước chữ để dễ đọc hơn */
 }
 
 #message {
     width: calc(100% - 70px);
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
+    font-size: 16px; /* Tăng kích thước chữ cho input */
 }
 
 #send-btn {
@@ -41,9 +38,23 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size: 16px; /* Tăng kích thước chữ cho nút Send */
 }
 
 #send-btn:hover {
     background-color: #218838;
+}
+
+#chat-box button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px;
+}
+
+#chat-box button:hover {
+    background-color: #c82333;
 }
