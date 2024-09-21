@@ -49,6 +49,9 @@ db.ref('messages').on('child_added', function(snapshot) {
     const msgElement = document.createElement('div');
     msgElement.textContent = msgData.message;
 
+    // Set a unique ID for each message for easier removal
+    msgElement.setAttribute('data-id', snapshot.key); // Lưu key của tin nhắn
+
     // Append message to chat box
     chatBox.appendChild(msgElement);
     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
@@ -63,4 +66,16 @@ clearAllButton.addEventListener('click', () => {
       .catch((error) => {
           console.error("Error deleting messages:", error);
       });
+});
+
+// Listen for message removal
+db.ref('messages').on('child_removed', function(snapshot) {
+    const messageId = snapshot.key; // Lấy key của tin nhắn đã xóa
+    const msgElements = chatBox.querySelectorAll('div[data-id]');
+
+    msgElements.forEach((msgElement) => {
+        if (msgElement.getAttribute('data-id') === messageId) {
+            msgElement.remove(); // Xóa tin nhắn khỏi giao diện người dùng
+        }
+    });
 });
