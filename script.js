@@ -24,8 +24,8 @@ const clearAllButton = document.getElementById('clear-all-btn');
 function getUsername() {
     let username = localStorage.getItem('username');
     if (!username) {
-        username = prompt("Nghia");
-        localStorage.setItem('username', username); // Save the username in localStorage
+        username = prompt("Nhập tên của bạn:"); // Yêu cầu người dùng nhập tên nếu chưa có trong localStorage
+        localStorage.setItem('username', username); // Lưu tên người dùng vào localStorage
     }
     return username;
 }
@@ -56,7 +56,7 @@ function convertEmoticonsToEmoji(message) {
     };
 
     // Replace text emoticons with corresponding emoji
-    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, function(match) {
+    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(|:\)/g, function(match) {
         return emoticonsMap[match] || match;
     });
 }
@@ -91,6 +91,8 @@ messageInput.addEventListener('keypress', (event) => {
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
+    msgElement.setAttribute('data-id', snapshot.key); // Gán data-id cho mỗi tin nhắn
+
     const senderElement = document.createElement('strong'); // Phần tên người gửi
     senderElement.textContent = msgData.senderName + ': ';
     msgElement.appendChild(senderElement);
