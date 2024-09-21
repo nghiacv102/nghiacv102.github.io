@@ -21,7 +21,7 @@ const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn'); // Nút xóa tất cả
 
 // Send message to Firebase
-sendButton.addEventListener('click', () => {
+function sendMessage() {
     const message = messageInput.value;
     if (message) {
         const messageRef = db.ref('messages').push();
@@ -30,6 +30,16 @@ sendButton.addEventListener('click', () => {
             timestamp: Date.now()  // Thêm timestamp cho từng tin nhắn
         });
         messageInput.value = ''; // Clear input after sending
+    }
+}
+
+// Listen for "Send" button click
+sendButton.addEventListener('click', sendMessage);
+
+// Listen for "Enter" key press
+messageInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        sendMessage();
     }
 });
 
