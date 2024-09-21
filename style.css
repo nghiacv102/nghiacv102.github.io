@@ -1,3 +1,4 @@
+/* General styles */
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -9,7 +10,7 @@ body {
 }
 
 #chat-container {
-    width: 500px; /* Tăng chiều rộng của hộp chat */
+    width: 400px; /* Increase width of chat container */
     background-color: white;
     padding: 20px;
     border-radius: 10px;
@@ -17,71 +18,76 @@ body {
 }
 
 #chat-box {
-    height: 500px; /* Tăng chiều cao của hộp chat để hiển thị nhiều tin nhắn hơn */
+    height: 400px; /* Increase height to display more messages */
     border: 1px solid #ddd;
     margin-bottom: 10px;
     overflow-y: auto;
-    padding: 10px; /* Tăng khoảng cách trong hộp chat */
-    font-size: 16px; /* Tăng kích thước chữ để dễ đọc hơn */
-}
-
-#message {
-    width: calc(100% - 70px);
     padding: 10px;
-    font-size: 16px; /* Tăng kích thước chữ cho input */
+    background-color: #ffffff;
 }
 
-#send-btn, #clear-all-btn { /* Style cho cả hai nút */
+/* Input and button styling */
+#message {
+    width: calc(100% - 60px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#send-btn {
     padding: 10px;
     background-color: #28a745;
     color: white;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px; /* Tăng kích thước chữ cho nút Send */
-    margin-top: 10px;
-    margin-right: 5px;
-}
-
-#clear-all-btn { /* Style riêng cho nút Xóa tất cả */
-    background-color: #dc3545;
-}
-
-#send-btn:hover {
-    background-color: #218838;
-}
-
-#clear-all-btn:hover {
-    background-color: #c82333;
-}
-
-#chat-box button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
     border-radius: 5px;
-    cursor: pointer;
-    padding: 5px;
     margin-left: 10px;
 }
 
-#chat-box button:hover {
-    background-color: #c82333;
+#clear-all-btn {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
 }
-/* CSS for your messages */
+
+/* CSS for your messages (Sender) */
 .my-message {
-    background-color: #d1e7dd;
+    background-color: #d1e7dd; /* Greenish background for your message */
     padding: 10px;
     border-radius: 10px;
     margin: 5px 0;
     text-align: right; /* Right-align your messages */
+    margin-left: auto; /* Align to right */
+    max-width: 70%;
+    clear: both;
+    color: #333; /* Text color */
 }
 
-/* CSS for other people's messages */
+/* CSS for other people's messages (Receiver) */
 .other-message {
-    background-color: #f8d7da;
+    background-color: #f8d7da; /* Pinkish background for other people's message */
     padding: 10px;
     border-radius: 10px;
     margin: 5px 0;
     text-align: left; /* Left-align others' messages */
+    margin-right: auto; /* Align to left */
+    max-width: 70%;
+    clear: both;
+    color: #333; /* Text color */
+}
+
+/* Scrollable chat-box style */
+#chat-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat-box::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
 }
