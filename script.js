@@ -25,7 +25,7 @@ function getUsername() {
     let username = localStorage.getItem('username');
     if (!username) {
         // Chỉ hiện prompt nếu username chưa tồn tại trong localStorage
-        username = prompt("Nhập tên của bạn:") || "Khách"; // Nếu người dùng bấm 'Cancel' hoặc để trống, đặt tên mặc định là "Khách"
+        username = prompt("Nhập tên của bạn:") || "Anhhh"; // Nếu người dùng bấm 'Cancel' hoặc để trống, đặt tên mặc định là "Khách"
         localStorage.setItem('username', username); // Lưu tên vào localStorage
     }
     return username;
