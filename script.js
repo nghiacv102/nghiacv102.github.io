@@ -20,8 +20,17 @@ const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 
-// Get username (thay đổi tên tại đây nếu cần)
-const username = prompt("Nhập tên của bạn:");
+// Function to get or set username
+function getUsername() {
+    let username = localStorage.getItem('username');
+    if (!username) {
+        username = prompt("Nhập tên của bạn:");
+        localStorage.setItem('username', username); // Save the username in localStorage
+    }
+    return username;
+}
+
+const username = getUsername(); // Get username from localStorage or prompt if not set
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
