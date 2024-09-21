@@ -68,3 +68,20 @@ body {
 #chat-box button:hover {
     background-color: #c82333;
 }
+/* CSS for your messages */
+.my-message {
+    background-color: #d1e7dd;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    text-align: right; /* Right-align your messages */
+}
+
+/* CSS for other people's messages */
+.other-message {
+    background-color: #f8d7da;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    text-align: left; /* Left-align others' messages */
+}
