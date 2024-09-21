@@ -23,13 +23,43 @@ const clearAllButton = document.getElementById('clear-all-btn');
 // Get username (thay đổi tên tại đây nếu cần)
 const username = prompt("Nhập tên của bạn:");
 
+// Emoji conversion function
+function convertEmoticonsToEmoji(message) {
+    const emoticonsMap = {
+        ':v': '😂',
+        ':D': '😃',
+        ':P': '😜',
+        ':)': '😊',
+        ':(': '🙁',
+        ':O': '😲',
+        ":'(": '😢',
+        '<3': '❤️',
+        ';)': '😉',
+        ':|': '😐',
+        ':S': '😕',
+        ':*': '😘',
+        ':3': '😺',
+        'B-)': '😎',
+        'O:)': '😇',
+        '>:)': '😠',
+        ':x': '🤐',
+        'XD': '😆'
+    };
+
+    // Replace text emoticons with corresponding emoji
+    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, function(match) {
+        return emoticonsMap[match] || match;
+    });
+}
+
 // Function to send message
 function sendMessage() {
     const message = messageInput.value;
     if (message) {
+        const convertedMessage = convertEmoticonsToEmoji(message); // Convert text to emoji
         const messageRef = db.ref('messages').push();
         messageRef.set({
-            message: message,
+            message: convertedMessage,
             timestamp: Date.now(),
             senderName: username, // Thêm tên người gửi
             isSender: true // Gắn cờ để biết tin nhắn này của ai
