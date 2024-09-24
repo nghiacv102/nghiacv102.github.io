@@ -20,9 +20,17 @@ const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 
-// Default usernames
-const myUsername = "Anhhh"; // Your default name (the sender)
-const otherUsername = "Emmm"; // Other user's name (the receiver)
+// Function to get or set username
+function getUsername() {
+    let username = localStorage.getItem('username');
+    if (!username) {
+        username = prompt("Please enter your name:");
+        localStorage.setItem('username', username); // Save the username in localStorage
+    }
+    return username;
+}
+
+const username = getUsername(); // Get username from localStorage or prompt if not set
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -62,7 +70,8 @@ function sendMessage() {
         messageRef.set({
             message: convertedMessage,
             timestamp: Date.now(),
-            senderName: myUsername // Tên mặc định của bạn (Anhhh)
+            senderName: username, // Thêm tên người gửi
+            isSender: true // Gắn cờ để biết tin nhắn này của ai
         });
         messageInput.value = ''; // Clear input after sending
     }
@@ -83,21 +92,19 @@ db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
     const senderElement = document.createElement('strong'); // Phần tên người gửi
-
-    // Phân biệt giữa tin nhắn của bạn và tin nhắn của đối phương
-    if (msgData.senderName === myUsername) {
-        senderElement.textContent = myUsername + ': ';
-        msgElement.classList.add('my-message'); // Tin nhắn của bạn
-    } else {
-        senderElement.textContent = otherUsername + ': '; // Hiển thị tên Emmm cho tin nhắn khác
-        msgElement.classList.add('other-message'); // Tin nhắn từ người khác
-    }
-
+    senderElement.textContent = msgData.senderName + ': ';
     msgElement.appendChild(senderElement);
 
     const messageContent = document.createElement('span');
     messageContent.textContent = msgData.message;
     msgElement.appendChild(messageContent);
+
+    // Set different style for sender and receiver
+    if (msgData.senderName === username) {
+        msgElement.classList.add('my-message'); // Message from the current user
+    } else {
+        msgElement.classList.add('other-message'); // Message from others
+    }
 
     // Append message to chat box
     chatBox.appendChild(msgElement);
