@@ -21,7 +21,7 @@ const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 
 // Default usernames
-const username = "Anhhh"; // Your default name
+const myUsername = "Anhhh"; // Your default name
 const otherUsername = "Emmm"; // Other user's name
 
 // Emoji conversion function
@@ -62,8 +62,8 @@ function sendMessage() {
         messageRef.set({
             message: convertedMessage,
             timestamp: Date.now(),
-            senderName: username, // Thêm tên người gửi
-            isSender: true // Gắn cờ để biết tin nhắn này của ai
+            senderName: myUsername, // Tên người gửi sẽ luôn là Anhhh
+            isSender: true // Đánh dấu tin nhắn này là của người gửi (Anhhh)
         });
         messageInput.value = ''; // Clear input after sending
     }
@@ -84,19 +84,21 @@ db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
     const senderElement = document.createElement('strong'); // Phần tên người gửi
-    senderElement.textContent = msgData.senderName + ': ';
+
+    // Kiểm tra nếu tin nhắn được gửi bởi "Anhhh" hoặc "Emmm"
+    if (msgData.senderName === myUsername) {
+        senderElement.textContent = myUsername + ': ';
+        msgElement.classList.add('my-message'); // Message từ Anhhh
+    } else {
+        senderElement.textContent = otherUsername + ': ';
+        msgElement.classList.add('other-message'); // Message từ Emmm
+    }
+
     msgElement.appendChild(senderElement);
 
     const messageContent = document.createElement('span');
     messageContent.textContent = msgData.message;
     msgElement.appendChild(messageContent);
-
-    // Set different style for sender and receiver
-    if (msgData.senderName === username) {
-        msgElement.classList.add('my-message'); // Message from the current user
-    } else {
-        msgElement.classList.add('other-message'); // Message from others
-    }
 
     // Append message to chat box
     chatBox.appendChild(msgElement);
