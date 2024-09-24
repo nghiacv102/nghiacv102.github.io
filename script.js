@@ -21,8 +21,8 @@ const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 
 // Default usernames
-const myUsername = "Anhhh"; // Your default name
-const otherUsername = "Emmm"; // Other user's name
+const myUsername = "Anhhh"; // Your default name (the sender)
+const otherUsername = "Emmm"; // Other user's name (the receiver)
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -62,8 +62,7 @@ function sendMessage() {
         messageRef.set({
             message: convertedMessage,
             timestamp: Date.now(),
-            senderName: myUsername, // Tên người gửi sẽ luôn là Anhhh
-            isSender: true // Đánh dấu tin nhắn này là của người gửi (Anhhh)
+            senderName: myUsername, // Luôn là Anhhh khi bạn gửi tin nhắn
         });
         messageInput.value = ''; // Clear input after sending
     }
@@ -85,13 +84,13 @@ db.ref('messages').on('child_added', function(snapshot) {
     const msgElement = document.createElement('div');
     const senderElement = document.createElement('strong'); // Phần tên người gửi
 
-    // Kiểm tra nếu tin nhắn được gửi bởi "Anhhh" hoặc "Emmm"
+    // Kiểm tra nếu tin nhắn được gửi bởi bạn hoặc người khác
     if (msgData.senderName === myUsername) {
         senderElement.textContent = myUsername + ': ';
-        msgElement.classList.add('my-message'); // Message từ Anhhh
+        msgElement.classList.add('my-message'); // Message từ Anhhh (người gửi)
     } else {
         senderElement.textContent = otherUsername + ': ';
-        msgElement.classList.add('other-message'); // Message từ Emmm
+        msgElement.classList.add('other-message'); // Message từ Emmm (người nhận)
     }
 
     msgElement.appendChild(senderElement);
