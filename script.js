@@ -62,7 +62,7 @@ function sendMessage() {
         messageRef.set({
             message: convertedMessage,
             timestamp: Date.now(),
-            senderName: myUsername, // Luôn là Anhhh khi bạn gửi tin nhắn
+            senderName: myUsername // Tên mặc định của bạn (Anhhh)
         });
         messageInput.value = ''; // Clear input after sending
     }
@@ -84,13 +84,13 @@ db.ref('messages').on('child_added', function(snapshot) {
     const msgElement = document.createElement('div');
     const senderElement = document.createElement('strong'); // Phần tên người gửi
 
-    // Kiểm tra nếu tin nhắn được gửi bởi bạn hoặc người khác
+    // Phân biệt giữa tin nhắn của bạn và tin nhắn của đối phương
     if (msgData.senderName === myUsername) {
         senderElement.textContent = myUsername + ': ';
-        msgElement.classList.add('my-message'); // Message từ Anhhh (người gửi)
+        msgElement.classList.add('my-message'); // Tin nhắn của bạn
     } else {
-        senderElement.textContent = otherUsername + ': ';
-        msgElement.classList.add('other-message'); // Message từ Emmm (người nhận)
+        senderElement.textContent = otherUsername + ': '; // Hiển thị tên Emmm cho tin nhắn khác
+        msgElement.classList.add('other-message'); // Tin nhắn từ người khác
     }
 
     msgElement.appendChild(senderElement);
