@@ -1,4 +1,4 @@
-// Firebase config
+// Firebase config (Replace with your Firebase configuration details)
 const firebaseConfig = {
     apiKey: "AIzaSyD-XCVoVKwP2d_Fxp5XbkgdFpr1Y-7qtMk",
     authDomain: "linhtinh-8f82a.firebaseapp.com",
@@ -12,16 +12,18 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db = firebase.database(); // Initialize Realtime Database
 
+// Elements
 const chatBox = document.getElementById('chat-box');
 const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
+const newMessageCountElement = document.getElementById('new-message-count');
 
-let unreadCount = 0; // Số tin nhắn chưa đọc
-let replyingTo = null; // Lưu tin nhắn đang trả lời
+let newMessageCount = 0;
 
+// Emoji conversion function
 function convertEmoticonsToEmoji(message) {
     const emoticonsMap = {
         ':v': '😂',
@@ -44,11 +46,12 @@ function convertEmoticonsToEmoji(message) {
         'XD': '😆'
     };
 
-    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, function(match) {
+    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, match => {
         return emoticonsMap[match] || match;
     });
 }
 
+// Function to send message
 function sendMessage() {
     const message = messageInput.value;
     if (message) {
@@ -58,74 +61,63 @@ function sendMessage() {
             message: convertedMessage,
             timestamp: Date.now(),
             senderName: "Anhhh",
-            isSender: true,
-            replyTo: replyingTo // Thêm thông tin tin nhắn trả lời
+            isSender: true
         });
-        messageInput.value = ''; // Clear input after sending
-        replyingTo = null; // Reset reply after sending
+        messageInput.value = '';
     }
 }
 
+// Listen for "Send" button click
 sendButton.addEventListener('click', sendMessage);
+
+// Listen for "Enter" key press
 messageInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         sendMessage();
     }
 });
 
+// Listen for new messages from Firebase
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
-    const senderElement = document.createElement('strong');
-    senderElement.textContent = msgData.senderName + ': ';
-    msgElement.appendChild(senderElement);
-
-    const messageContent = document.createElement('span');
-    messageContent.textContent = msgData.message;
-    msgElement.appendChild(messageContent);
-
-    if (msgData.replyTo) {
-        const replyElement = document.createElement('div');
-        replyElement.style.marginLeft = '20px'; // Indent for replies
-        replyElement.textContent = `Replying to: ${msgData.replyTo}`;
-        msgElement.appendChild(replyElement);
-    }
+    msgElement.textContent = msgData.message;
 
     if (msgData.senderName === "Anhhh") {
         msgElement.classList.add('my-message');
     } else {
         msgElement.classList.add('other-message');
-        unreadCount++;
-        document.title = `(${unreadCount}) emlacuatoi`;
+        newMessageCount++;
+        newMessageCountElement.textContent = newMessageCount + " tin nhắn mới";
+        newMessageCountElement.classList.remove('hidden');
+        document.title = `(${newMessageCount}) emlacuatoi`;
     }
-
-    msgElement.addEventListener('click', () => {
-        replyingTo = msgData.message; // Ghi nhận tin nhắn đang trả lời
-        messageInput.value = `@${msgData.senderName}: `; // Hiển thị thông báo trong input
-    });
 
     chatBox.appendChild(msgElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 
+// Clear all messages when 'Clear All' button is clicked
 clearAllButton.addEventListener('click', () => {
     db.ref('messages').remove()
       .then(() => {
           chatBox.innerHTML = '';
-          unreadCount = 0;
-          document.title = 'emlacuatoi';
+          newMessageCount = 0;
+          newMessageCountElement.classList.add('hidden');
+          document.title = "emlacuatoi";
       })
       .catch((error) => {
           console.error("Error deleting messages:", error);
       });
 });
 
+// Listen for message removal
 db.ref('messages').on('child_removed', function(snapshot) {
     const messageId = snapshot.key;
-    const msgElements = chatBox.querySelectorAll('div[data-id]');
+    const msgElements = chatBox.querySelectorAll('div');
 
-    msgElements.forEach((msgElement) => {
-        if (msgElement.getAttribute('data-id') === messageId) {
+    msgElements.forEach(msgElement => {
+        if (msgElement.textContent === snapshot.val().message) {
             msgElement.remove();
         }
     });
