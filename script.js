@@ -82,6 +82,14 @@ messageInput.addEventListener('keypress', (event) => {
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
+    
+    // Check sender and set styles accordingly
+    if (msgData.senderName === username) {
+        msgElement.classList.add('my-message');
+    } else {
+        msgElement.classList.add('other-message');
+    }
+    
     const senderElement = document.createElement('strong');
     senderElement.textContent = msgData.senderName + ': ';
     msgElement.appendChild(senderElement);
@@ -89,13 +97,6 @@ db.ref('messages').on('child_added', function(snapshot) {
     const messageContent = document.createElement('span');
     messageContent.textContent = msgData.message;
     msgElement.appendChild(messageContent);
-
-    // Set different style for sender and receiver
-    if (msgData.senderName === otherUsername) {
-        msgElement.classList.add('my-message'); // Đổi chỗ cho người nhận
-    } else {
-        msgElement.classList.add('other-message'); // Đổi chỗ cho người gửi
-    }
 
     // Append message to chat box
     chatBox.appendChild(msgElement);
