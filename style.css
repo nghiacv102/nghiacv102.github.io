@@ -58,8 +58,4 @@ button {
 button:hover {
     background-color: #0056b3;
 }
-.replying-to {
-    font-style: italic;
-    color: #555; /* Màu xám nhạt */
-    margin-bottom: 5px;
-}
+
