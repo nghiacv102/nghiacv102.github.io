@@ -28,10 +28,10 @@ body {
 }
 
 .other-message {
-    background-color: #ffcccb; /* Màu hồng cho tin nhắn của đối phương */
+    background-color: #d8bfd8; /* Màu tím nhạt cho tin nhắn của đối phương */
     color: black;
     padding: 10px;
     border-radius: 10px;
     margin: 5px 0;
-    text-align: left; /* Căn phải */
+    text-align: left; /* Căn trái */
 }
