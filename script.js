@@ -22,7 +22,6 @@ const clearAllButton = document.getElementById('clear-all-btn');
 
 // Default usernames
 const username = "Anhhh"; // Your default name
-const otherUsername = "Emmm"; // Other user's name
 let newMessageCount = 0; // Counter for new messages
 
 // Emoji conversion function
@@ -55,7 +54,7 @@ function convertEmoticonsToEmoji(message) {
 
 // Function to send message
 function sendMessage() {
-    const message = messageInput.value;
+    const message = messageInput.value.trim(); // Trim whitespace
     if (message) {
         const convertedMessage = convertEmoticonsToEmoji(message);
         const messageRef = db.ref('messages').push();
@@ -95,8 +94,8 @@ db.ref('messages').on('child_added', function(snapshot) {
         msgElement.classList.add('my-message');
     } else {
         msgElement.classList.add('other-message');
-        newMessageCount++; // Increment the new message counter
-        updateTitle(); // Update the title with new message count
+        newMessageCount++;
+        updateTitle();
     }
 
     chatBox.appendChild(msgElement);
@@ -113,8 +112,8 @@ clearAllButton.addEventListener('click', () => {
     db.ref('messages').remove()
       .then(() => {
           chatBox.innerHTML = '';
-          newMessageCount = 0; // Reset new message counter
-          document.title = "emlacuatoi"; // Reset title
+          newMessageCount = 0;
+          document.title = "emlacuatoi";
       })
       .catch((error) => {
           console.error("Error deleting messages:", error);
