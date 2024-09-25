@@ -1,68 +1,113 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f9f9f9;
+// Firebase config (Replace with your Firebase configuration details)
+const firebaseConfig = {
+    apiKey: "AIzaSyD-XCVoVKwP2d_Fxp5XbkgdFpr1Y-7qtMk",
+    authDomain: "linhtinh-8f82a.firebaseapp.com",
+    databaseURL: "https://linhtinh-8f82a-default-rtdb.firebaseio.com",
+    projectId: "linhtinh-8f82a",
+    storageBucket: "linhtinh-8f82a.appspot.com",
+    messagingSenderId: "824846452214",
+    appId: "1:824846452214:web:ae29580be329f285c973d7",
+    measurementId: "G-STHKF3G1EZ"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database(); // Initialize Realtime Database
+
+// Elements
+const chatBox = document.getElementById('chat-box');
+const messageInput = document.getElementById('message');
+const sendButton = document.getElementById('send-btn');
+const clearAllButton = document.getElementById('clear-all-btn');
+
+// Default usernames
+const username = "Anhhh"; // Your default name
+
+// Emoji conversion function
+function convertEmoticonsToEmoji(message) {
+    const emoticonsMap = {
+        ':v': '😂',
+        ':D': '😃',
+        ':P': '😜',
+        ':)': '😊',
+        ':(': '🙁',
+        ':O': '😲',
+        ":'(": '😢',
+        '<3': '❤️',
+        ';)': '😉',
+        ':|': '😐',
+        ':S': '😕',
+        ':*': '😘',
+        ':3': '😺',
+        'B-)': '😎',
+        'O:)': '😇',
+        '>:)': '😠',
+        ':x': '🤐',
+        'XD': '😆'
+    };
+
+    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, function(match) {
+        return emoticonsMap[match] || match;
+    });
 }
 
-#chat-container {
-    max-width: 600px;
-    margin: auto;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+// Function to send message
+function sendMessage() {
+    const message = messageInput.value.trim(); // Trim whitespace
+    if (message) {
+        const convertedMessage = convertEmoticonsToEmoji(message);
+        const messageRef = db.ref('messages').push();
+        messageRef.set({
+            message: convertedMessage,
+            timestamp: Date.now(),
+            senderName: username // Ghi nhận tên người gửi
+        });
+        messageInput.value = ''; // Clear input after sending
+    }
 }
 
-#chat-box {
-    display: flex;
-    flex-direction: column;
-    max-height: 400px;
-    overflow-y: auto;
-}
+// Listen for "Send" button click
+sendButton.addEventListener('click', sendMessage);
 
-.my-message {
-    background-color: #d1ffd1; /* Màu nền cho tin nhắn của người gửi */
-    align-self: flex-end; /* Đẩy tin nhắn sang bên phải */
-    padding: 10px;
-    margin: 5px;
-    border-radius: 10px;
-    max-width: 70%; /* Giới hạn chiều rộng tin nhắn */
-    position: relative;
-}
+// Listen for "Enter" key press
+messageInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+});
 
-.other-message {
-    background-color: #f0f0f0; /* Màu nền cho tin nhắn của người nhận */
-    align-self: flex-start; /* Đẩy tin nhắn sang bên trái */
-    padding: 10px;
-    margin: 5px;
-    border-radius: 10px;
-    max-width: 70%; /* Giới hạn chiều rộng tin nhắn */
-    position: relative;
-}
+// Listen for new messages from Firebase
+db.ref('messages').on('child_added', function(snapshot) {
+    const msgData = snapshot.val();
+    const msgElement = document.createElement('div');
 
-strong {
-    display: block; /* Đưa tên người gửi lên trên tin nhắn */
-}
+    // Set different styles for sender and receiver
+    if (msgData.senderName === username) {
+        msgElement.classList.add('my-message');
+    } else {
+        msgElement.classList.add('other-message');
+    }
 
-input[type="text"] {
-    width: calc(100% - 90px);
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
-}
+    const senderElement = document.createElement('strong');
+    senderElement.textContent = msgData.senderName + ': ';
+    msgElement.appendChild(senderElement);
 
-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
+    const messageContent = document.createElement('span');
+    messageContent.textContent = msgData.message;
+    msgElement.appendChild(messageContent);
 
-button:hover {
-    background-color: #0056b3;
-}
+    // Append message to chat box
+    chatBox.appendChild(msgElement);
+    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+});
+
+// Clear all messages when 'Clear All' button is clicked
+clearAllButton.addEventListener('click', () => {
+    db.ref('messages').remove()
+      .then(() => {
+          chatBox.innerHTML = ''; // Clear chat box in UI after successful deletion
+      })
+      .catch((error) => {
+          console.error("Error deleting messages:", error);
+      });
+});
