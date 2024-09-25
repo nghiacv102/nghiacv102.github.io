@@ -19,12 +19,11 @@ const chatBox = document.getElementById('chat-box');
 const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
-const newMessageCount = document.getElementById('new-message-count');
 
 // Default usernames
 const username = "Anhhh"; // Your default name
 const otherUsername = "Emmm"; // Other user's name
-let messageCount = 0;
+let newMessageCount = 0; // Counter for new messages
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -49,7 +48,7 @@ function convertEmoticonsToEmoji(message) {
         'XD': '😆'
     };
 
-    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, match => {
+    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, function(match) {
         return emoticonsMap[match] || match;
     });
 }
@@ -66,7 +65,7 @@ function sendMessage() {
             senderName: username,
             isSender: true
         });
-        messageInput.value = '';
+        messageInput.value = ''; // Clear input after sending
     }
 }
 
@@ -84,46 +83,48 @@ messageInput.addEventListener('keypress', (event) => {
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
-    
+    const senderElement = document.createElement('strong');
+    senderElement.textContent = msgData.senderName + ': ';
+    msgElement.appendChild(senderElement);
+
     const messageContent = document.createElement('span');
     messageContent.textContent = msgData.message;
     msgElement.appendChild(messageContent);
 
-    // Set different style for sender and receiver
     if (msgData.senderName === username) {
         msgElement.classList.add('my-message');
     } else {
         msgElement.classList.add('other-message');
-        messageCount++;
-        updateNewMessageCount();
+        newMessageCount++; // Increment the new message counter
+        updateTitle(); // Update the title with new message count
     }
 
     chatBox.appendChild(msgElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 
-// Update new message count display
-function updateNewMessageCount() {
-    newMessageCount.textContent = `Tin nhắn mới: ${messageCount}`;
+// Update the page title with the new message count
+function updateTitle() {
+    document.title = `(${newMessageCount}) emlacuatoi`;
 }
 
 // Clear all messages when 'Clear All' button is clicked
 clearAllButton.addEventListener('click', () => {
     db.ref('messages').remove()
-        .then(() => {
-            chatBox.innerHTML = '';
-            messageCount = 0;
-            updateNewMessageCount();
-        })
-        .catch(error => {
-            console.error("Error deleting messages:", error);
-        });
+      .then(() => {
+          chatBox.innerHTML = '';
+          newMessageCount = 0; // Reset new message counter
+          document.title = "emlacuatoi"; // Reset title
+      })
+      .catch((error) => {
+          console.error("Error deleting messages:", error);
+      });
 });
 
 // Listen for message removal
 db.ref('messages').on('child_removed', function(snapshot) {
     const messageId = snapshot.key;
-    const msgElements = chatBox.querySelectorAll('div');
+    const msgElements = chatBox.querySelectorAll('div[data-id]');
 
     msgElements.forEach((msgElement) => {
         if (msgElement.getAttribute('data-id') === messageId) {
