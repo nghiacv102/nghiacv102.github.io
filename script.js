@@ -1,4 +1,4 @@
-// Firebase config
+// Firebase config (Replace with your Firebase configuration details)
 const firebaseConfig = {
     apiKey: "AIzaSyD-XCVoVKwP2d_Fxp5XbkgdFpr1Y-7qtMk",
     authDomain: "linhtinh-8f82a.firebaseapp.com",
@@ -12,70 +12,54 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db = firebase.database(); // Initialize Realtime Database
 
+// Elements
 const chatBox = document.getElementById('chat-box');
 const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 
-let unreadCount = 0; // Số tin nhắn chưa đọc
-let replyingTo = null; // Lưu tin nhắn đang trả lời
+// Default usernames
+const username = "Anhhh"; // Your default name
+const otherUsername = "Emmm"; // Other user's name
 
-function convertEmoticonsToEmoji(message) {
-    const emoticonsMap = {
-        ':v': '😂',
-        ':D': '😃',
-        ':P': '😜',
-        ':)': '😊',
-        ':(': '🙁',
-        ':O': '😲',
-        ":'(": '😢',
-        '<3': '❤️',
-        ';)': '😉',
-        ':|': '😐',
-        ':S': '😕',
-        ':*': '😘',
-        ':3': '😺',
-        'B-)': '😎',
-        'O:)': '😇',
-        '>:)': '😠',
-        ':x': '🤐',
-        'XD': '😆'
-    };
-
-    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, function(match) {
-        return emoticonsMap[match] || match;
-    });
-}
-
+// Function to send message
 function sendMessage() {
     const message = messageInput.value;
     if (message) {
-        const convertedMessage = convertEmoticonsToEmoji(message);
         const messageRef = db.ref('messages').push();
         messageRef.set({
-            message: convertedMessage,
+            message: message,
             timestamp: Date.now(),
-            senderName: "Anhhh",
-            isSender: true,
-            replyTo: replyingTo // Thêm thông tin tin nhắn trả lời
+            senderName: username // Ghi nhận tên người gửi
         });
         messageInput.value = ''; // Clear input after sending
-        replyingTo = null; // Reset reply after sending
     }
 }
 
+// Listen for "Send" button click
 sendButton.addEventListener('click', sendMessage);
+
+// Listen for "Enter" key press
 messageInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         sendMessage();
     }
 });
 
+// Listen for new messages from Firebase
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
+
+    // Set different styles for sender and receiver
+    if (msgData.senderName === username) {
+        msgElement.classList.add('my-message');
+    } else {
+        msgElement.classList.add('other-message');
+    }
+
     const senderElement = document.createElement('strong');
     senderElement.textContent = msgData.senderName + ': ';
     msgElement.appendChild(senderElement);
@@ -84,48 +68,18 @@ db.ref('messages').on('child_added', function(snapshot) {
     messageContent.textContent = msgData.message;
     msgElement.appendChild(messageContent);
 
-    if (msgData.replyTo) {
-        const replyElement = document.createElement('div');
-        replyElement.style.marginLeft = '20px'; // Indent for replies
-        replyElement.textContent = `Replying to: ${msgData.replyTo}`;
-        msgElement.appendChild(replyElement);
-    }
-
-    if (msgData.senderName === "Anhhh") {
-        msgElement.classList.add('my-message');
-    } else {
-        msgElement.classList.add('other-message');
-        unreadCount++;
-        document.title = `(${unreadCount}) emlacuatoi`;
-    }
-
-    msgElement.addEventListener('click', () => {
-        replyingTo = msgData.message; // Ghi nhận tin nhắn đang trả lời
-        messageInput.value = `@${msgData.senderName}: `; // Hiển thị thông báo trong input
-    });
-
+    // Append message to chat box
     chatBox.appendChild(msgElement);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
 });
 
+// Clear all messages when 'Clear All' button is clicked
 clearAllButton.addEventListener('click', () => {
     db.ref('messages').remove()
       .then(() => {
-          chatBox.innerHTML = '';
-          unreadCount = 0;
-          document.title = 'emlacuatoi';
+          chatBox.innerHTML = ''; // Clear chat box in UI after successful deletion
       })
       .catch((error) => {
           console.error("Error deleting messages:", error);
       });
-
-db.ref('messages').on('child_removed', function(snapshot) {
-    const messageId = snapshot.key;
-    const msgElements = chatBox.querySelectorAll('div[data-id]');
-
-    msgElements.forEach((msgElement) => {
-        if (msgElement.getAttribute('data-id') === messageId) {
-            msgElement.remove();
-        }
-    });
 });
