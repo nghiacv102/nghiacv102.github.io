@@ -24,13 +24,36 @@ const clearAllButton = document.getElementById('clear-all-btn');
 function getUsername() {
     let username = localStorage.getItem('username');
     if (!username) {
-        username = prompt("Please enter your name:");
-        localStorage.setItem('username', username); // Save the username in localStorage
+        username = prompt("Please enter your name:"); // Prompts user to enter their name
+        if (username) { // Check if user entered something
+            localStorage.setItem('username', username); // Save the username in localStorage
+        } else {
+            username = "Anonymous"; // Fallback if user doesn't enter anything
+        }
     }
     return username;
 }
 
 const username = getUsername(); // Get username from localStorage or prompt if not set
+
+// Request notification permission
+function requestNotificationPermission() {
+    if (Notification.permission === 'default') {
+        Notification.requestPermission();
+    }
+}
+
+// Notify user of new message
+function notifyUser(message) {
+    if (Notification.permission === 'granted') {
+        const notification = new Notification("New message", {
+            body: message,
+            icon: "path/to/icon.png" // Optional: Path to an icon
+        });
+    }
+}
+
+requestNotificationPermission(); // Request permission for notifications
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -70,8 +93,8 @@ function sendMessage() {
         messageRef.set({
             message: convertedMessage,
             timestamp: Date.now(),
-            senderName: username, // Thêm tên người gửi
-            isSender: true // Gắn cờ để biết tin nhắn này của ai
+            senderName: username, // Add sender's name
+            isSender: true // Flag to indicate who sent the message
         });
         messageInput.value = ''; // Clear input after sending
     }
@@ -91,7 +114,7 @@ messageInput.addEventListener('keypress', (event) => {
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
-    const senderElement = document.createElement('strong'); // Phần tên người gửi
+    const senderElement = document.createElement('strong'); // Sender's name
     senderElement.textContent = msgData.senderName + ': ';
     msgElement.appendChild(senderElement);
 
@@ -104,6 +127,7 @@ db.ref('messages').on('child_added', function(snapshot) {
         msgElement.classList.add('my-message'); // Message from the current user
     } else {
         msgElement.classList.add('other-message'); // Message from others
+        notifyUser(msgData.message); // Notify if the message is from another user
     }
 
     // Append message to chat box
@@ -124,12 +148,12 @@ clearAllButton.addEventListener('click', () => {
 
 // Listen for message removal
 db.ref('messages').on('child_removed', function(snapshot) {
-    const messageId = snapshot.key; // Lấy key của tin nhắn đã xóa
+    const messageId = snapshot.key; // Get the key of the deleted message
     const msgElements = chatBox.querySelectorAll('div[data-id]');
 
     msgElements.forEach((msgElement) => {
         if (msgElement.getAttribute('data-id') === messageId) {
-            msgElement.remove(); // Xóa tin nhắn khỏi giao diện người dùng
+            msgElement.remove(); // Remove the message from the UI
         }
     });
 });
