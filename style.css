@@ -4,7 +4,7 @@ body {
 }
 
 #chat-container {
-    width: 400px; /* Đặt chiều rộng */
+    width: 400px; /* Width of chat box */
     margin: 0 auto;
     background: white;
     border-radius: 8px;
@@ -12,7 +12,7 @@ body {
     padding: 10px;
     display: flex;
     flex-direction: column;
-    height: 600px; /* Chiều cao chat box */
+    height: 600px; /* Height of chat box */
 }
 
 #chat-box {
@@ -25,21 +25,21 @@ body {
 }
 
 .my-message {
-    background-color: #add8e6; /* Màu xanh cho tin nhắn của bạn */
+    background-color: #add8e6; /* Light blue for your messages */
     padding: 10px;
     margin: 5px;
     border-radius: 10px;
-    align-self: flex-end; /* Tin nhắn của bạn nằm bên phải */
-    max-width: 70%; /* Chiều rộng tối đa */
+    align-self: flex-end; /* Your messages align to the right */
+    max-width: 70%; /* Maximum width */
 }
 
 .other-message {
-    background-color: #ffcccb; /* Màu hồng nhạt cho tin nhắn của đối phương */
+    background-color: #e6e6fa; /* Light purple for other user's messages */
     padding: 10px;
     margin: 5px;
     border-radius: 10px;
-    align-self: flex-start; /* Tin nhắn của đối phương nằm bên trái */
-    max-width: 70%; /* Chiều rộng tối đa */
+    align-self: flex-start; /* Other user's messages align to the left */
+    max-width: 70%; /* Maximum width */
 }
 
 input[type="text"] {
