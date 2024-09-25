@@ -4,13 +4,13 @@ body {
 }
 
 #chat-container {
-    width: 50%; /* Đặt chiều rộng của container chat xuống 50% */
+    width: 50%;
     margin: auto;
     padding: 10px;
 }
 
 #chat-box {
-    height: 600px; /* Chiều cao */
+    height: 600px;
     overflow-y: auto;
     background-color: #ffffff;
     border: 1px solid #ccc;
@@ -19,7 +19,7 @@ body {
 }
 
 .my-message {
-    background-color: #add8e6; /* Màu xanh nhạt cho tin nhắn của bạn */
+    background-color: #add8e6;
     color: black;
     padding: 10px;
     border-radius: 10px;
@@ -28,7 +28,7 @@ body {
 }
 
 .other-message {
-    background-color: #e6e6fa; /* Màu tím nhạt cho tin nhắn của đối phương */
+    background-color: #ffcccb; /* Màu hồng cho tin nhắn của đối phương */
     color: black;
     padding: 10px;
     border-radius: 10px;
