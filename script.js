@@ -65,7 +65,7 @@ function sendMessage() {
             timestamp: Date.now(),
             senderName: username,
             isSender: true,
-            replyingTo: replyingToMessageId // Add replyingTo property
+            replyingTo: replyingToMessageId
         });
         messageInput.value = ''; // Clear input after sending
         replyingToMessageId = null; // Reset replying to message ID
@@ -96,9 +96,11 @@ db.ref('messages').on('child_added', function(snapshot) {
 
     // Set different style for sender and receiver
     if (msgData.senderName === username) {
-        msgElement.classList.add('my-message');
+        msgElement.classList.add('my-message'); // Message from the current user
+        msgElement.style.textAlign = 'right'; // Align right for current user
     } else {
-        msgElement.classList.add('other-message');
+        msgElement.classList.add('other-message'); // Message from others
+        msgElement.style.textAlign = 'left'; // Align left for other users
     }
 
     // Add click event to the message for replying
@@ -108,7 +110,7 @@ db.ref('messages').on('child_added', function(snapshot) {
     });
 
     chatBox.appendChild(msgElement);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
 });
 
 // Clear all messages when 'Clear All' button is clicked
