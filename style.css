@@ -1,68 +1,60 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
-    background-color: #f9f9f9;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
 #chat-container {
-    max-width: 600px;
-    margin: auto;
+    width: 400px;
+    margin: 20px auto;
+    background: white;
     border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
 }
 
 #chat-box {
-    display: flex;
-    flex-direction: column;
-    max-height: 400px;
+    height: 300px;
     overflow-y: auto;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 5px;
 }
 
 .my-message {
-    background-color: #d1ffd1; /* Màu nền cho tin nhắn của người gửi */
-    align-self: flex-end; /* Đẩy tin nhắn sang bên phải */
-    padding: 10px;
-    margin: 5px;
-    border-radius: 10px;
-    max-width: 70%; /* Giới hạn chiều rộng tin nhắn */
-    position: relative;
+    text-align: right;
+    background-color: #d1ffd1;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
 }
 
 .other-message {
-    background-color: #f0f0f0; /* Màu nền cho tin nhắn của người nhận */
-    align-self: flex-start; /* Đẩy tin nhắn sang bên trái */
-    padding: 10px;
-    margin: 5px;
-    border-radius: 10px;
-    max-width: 70%; /* Giới hạn chiều rộng tin nhắn */
-    position: relative;
-}
-
-strong {
-    display: block; /* Đưa tên người gửi lên trên tin nhắn */
+    text-align: left;
+    background-color: #ffd1d1;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
 }
 
 input[type="text"] {
-    width: calc(100% - 90px);
+    width: calc(100% - 60px);
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
+    border-radius: 5px;
 }
 
 button {
-    padding: 10px 15px;
+    padding: 10px;
     border: none;
-    border-radius: 4px;
-    background-color: #007bff;
+    background-color: #5cb85c;
     color: white;
+    border-radius: 5px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #4cae4c;
 }
