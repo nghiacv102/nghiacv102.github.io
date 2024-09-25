@@ -1,59 +1,55 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
 }
 
 #chat-container {
-    width: 50%; /* Độ rộng chat box hẹp lại 1 nửa */
-    margin: 50px auto;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    width: 1200px; /* Đã thay đổi chiều rộng thành 1200px */
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    height: 600px; /* Chiều cao vẫn giữ 600px */
+    display: flex;
+    flex-direction: column;
 }
 
 #chat-box {
-    height: 400px; /* Chiều cao chat box */
+    flex-grow: 1;
     overflow-y: auto;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #fafafa;
+    background-color: #fff;
 }
 
 .my-message {
+    background-color: #cce5ff;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
     text-align: right;
-    margin: 10px 0;
-    background-color: #add8e6; /* Màu xanh nhạt cho tin nhắn của bạn */
-    padding: 10px;
-    border-radius: 10px;
-    display: inline-block;
-    max-width: 75%; /* Độ rộng tối đa của tin nhắn */
+    align-self: flex-end;
 }
 
 .other-message {
+    background-color: #e2e3e5;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
     text-align: left;
-    margin: 10px 0;
-    background-color: #ffcccb; /* Màu hồng nhạt cho tin nhắn của đối phương */
-    padding: 10px;
-    border-radius: 10px;
-    display: inline-block;
-    max-width: 75%; /* Độ rộng tối đa của tin nhắn */
+    align-self: flex-start;
 }
 
 input[type="text"] {
-    width: calc(100% - 120px); /* Chiều rộng input */
     padding: 10px;
-    margin-top: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 button {
-    padding: 10px 20px;
-    margin-left: 10px;
+    margin-top: 10px;
+    padding: 10px;
     border: none;
     border-radius: 5px;
     background-color: #007bff;
