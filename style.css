@@ -3,13 +3,13 @@ body {
 }
 
 #chat-container {
-    width: 600px; /* Đã thay đổi chiều rộng */
+    width: 1200px; /* Đã thay đổi chiều rộng thành 1200px */
     margin: 0 auto;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
-    height: 600px; /* Đã thay đổi chiều cao */
+    height: 600px; /* Chiều cao vẫn giữ 600px */
     display: flex;
     flex-direction: column;
 }
