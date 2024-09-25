@@ -3,13 +3,13 @@ body {
 }
 
 #chat-container {
-    width: 1200px; /* Đã thay đổi chiều rộng thành 1200px */
+    width: 1200px; /* Chiều rộng của box chat */
     margin: 0 auto;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
-    height: 600px; /* Chiều cao vẫn giữ 600px */
+    height: 600px; /* Chiều cao của box chat */
     display: flex;
     flex-direction: column;
 }
@@ -24,7 +24,7 @@ body {
 }
 
 .my-message {
-    background-color: #cce5ff;
+    background-color: #add8e6; /* Màu xanh nhạt */
     padding: 5px;
     border-radius: 5px;
     margin: 5px 0;
@@ -33,7 +33,7 @@ body {
 }
 
 .other-message {
-    background-color: #e2e3e5;
+    background-color: #ffcccb; /* Màu hồng nhạt */
     padding: 5px;
     border-radius: 5px;
     margin: 5px 0;
