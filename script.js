@@ -91,10 +91,10 @@ db.ref('messages').on('child_added', function(snapshot) {
     msgElement.appendChild(messageContent);
 
     // Set different style for sender and receiver
-    if (msgData.senderName === username) {
-        msgElement.classList.add('my-message');
+    if (msgData.senderName === otherUsername) {
+        msgElement.classList.add('my-message'); // Đổi chỗ cho người nhận
     } else {
-        msgElement.classList.add('other-message');
+        msgElement.classList.add('other-message'); // Đổi chỗ cho người gửi
     }
 
     // Append message to chat box
