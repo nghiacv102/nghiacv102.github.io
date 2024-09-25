@@ -19,9 +19,12 @@ const chatBox = document.getElementById('chat-box');
 const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
-const newMessageCountElement = document.getElementById('new-message-count');
+const newMessageCount = document.getElementById('new-message-count');
 
-let newMessageCount = 0;
+// Default usernames
+const username = "Anhhh"; // Your default name
+const otherUsername = "Emmm"; // Other user's name
+let messageCount = 0;
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -60,7 +63,7 @@ function sendMessage() {
         messageRef.set({
             message: convertedMessage,
             timestamp: Date.now(),
-            senderName: "Anhhh",
+            senderName: username,
             isSender: true
         });
         messageInput.value = '';
@@ -81,34 +84,40 @@ messageInput.addEventListener('keypress', (event) => {
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
-    msgElement.textContent = msgData.message;
+    
+    const messageContent = document.createElement('span');
+    messageContent.textContent = msgData.message;
+    msgElement.appendChild(messageContent);
 
-    if (msgData.senderName === "Anhhh") {
+    // Set different style for sender and receiver
+    if (msgData.senderName === username) {
         msgElement.classList.add('my-message');
     } else {
         msgElement.classList.add('other-message');
-        newMessageCount++;
-        newMessageCountElement.textContent = newMessageCount + " tin nhắn mới";
-        newMessageCountElement.classList.remove('hidden');
-        document.title = `(${newMessageCount}) emlacuatoi`;
+        messageCount++;
+        updateNewMessageCount();
     }
 
     chatBox.appendChild(msgElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 
+// Update new message count display
+function updateNewMessageCount() {
+    newMessageCount.textContent = `Tin nhắn mới: ${messageCount}`;
+}
+
 // Clear all messages when 'Clear All' button is clicked
 clearAllButton.addEventListener('click', () => {
     db.ref('messages').remove()
-      .then(() => {
-          chatBox.innerHTML = '';
-          newMessageCount = 0;
-          newMessageCountElement.classList.add('hidden');
-          document.title = "emlacuatoi";
-      })
-      .catch((error) => {
-          console.error("Error deleting messages:", error);
-      });
+        .then(() => {
+            chatBox.innerHTML = '';
+            messageCount = 0;
+            updateNewMessageCount();
+        })
+        .catch(error => {
+            console.error("Error deleting messages:", error);
+        });
 });
 
 // Listen for message removal
@@ -116,8 +125,8 @@ db.ref('messages').on('child_removed', function(snapshot) {
     const messageId = snapshot.key;
     const msgElements = chatBox.querySelectorAll('div');
 
-    msgElements.forEach(msgElement => {
-        if (msgElement.textContent === snapshot.val().message) {
+    msgElements.forEach((msgElement) => {
+        if (msgElement.getAttribute('data-id') === messageId) {
             msgElement.remove();
         }
     });
