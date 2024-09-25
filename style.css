@@ -3,7 +3,7 @@ body {
 }
 
 #chat-container {
-    width: 1200px; /* Chiều rộng của box chat */
+    width: 600px; /* Chiều rộng của box chat */
     margin: 0 auto;
     padding: 10px;
     border: 1px solid #ccc;
