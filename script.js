@@ -22,7 +22,7 @@ const clearAllButton = document.getElementById('clear-all-btn');
 
 // Default usernames
 const username = "Anhhh"; // Your default name
-let newMessageCount = 0; // Counter for new messages
+const otherUsername = "Emmm"; // Other user's name
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -54,15 +54,14 @@ function convertEmoticonsToEmoji(message) {
 
 // Function to send message
 function sendMessage() {
-    const message = messageInput.value.trim(); // Trim whitespace
+    const message = messageInput.value;
     if (message) {
         const convertedMessage = convertEmoticonsToEmoji(message);
         const messageRef = db.ref('messages').push();
         messageRef.set({
             message: convertedMessage,
             timestamp: Date.now(),
-            senderName: username,
-            isSender: true
+            senderName: username // Ghi nhận tên người gửi
         });
         messageInput.value = ''; // Clear input after sending
     }
@@ -82,6 +81,14 @@ messageInput.addEventListener('keypress', (event) => {
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
+
+    // Set different styles for sender and receiver
+    if (msgData.senderName === username) {
+        msgElement.classList.add('my-message');
+    } else {
+        msgElement.classList.add('other-message');
+    }
+
     const senderElement = document.createElement('strong');
     senderElement.textContent = msgData.senderName + ': ';
     msgElement.appendChild(senderElement);
@@ -90,44 +97,18 @@ db.ref('messages').on('child_added', function(snapshot) {
     messageContent.textContent = msgData.message;
     msgElement.appendChild(messageContent);
 
-    if (msgData.senderName === username) {
-        msgElement.classList.add('my-message');
-    } else {
-        msgElement.classList.add('other-message');
-        newMessageCount++;
-        updateTitle();
-    }
-
+    // Append message to chat box
     chatBox.appendChild(msgElement);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
 });
-
-// Update the page title with the new message count
-function updateTitle() {
-    document.title = `(${newMessageCount}) emlacuatoi`;
-}
 
 // Clear all messages when 'Clear All' button is clicked
 clearAllButton.addEventListener('click', () => {
     db.ref('messages').remove()
       .then(() => {
-          chatBox.innerHTML = '';
-          newMessageCount = 0;
-          document.title = "emlacuatoi";
+          chatBox.innerHTML = ''; // Clear chat box in UI after successful deletion
       })
       .catch((error) => {
           console.error("Error deleting messages:", error);
       });
-});
-
-// Listen for message removal
-db.ref('messages').on('child_removed', function(snapshot) {
-    const messageId = snapshot.key;
-    const msgElements = chatBox.querySelectorAll('div[data-id]');
-
-    msgElements.forEach((msgElement) => {
-        if (msgElement.getAttribute('data-id') === messageId) {
-            msgElement.remove();
-        }
-    });
 });
