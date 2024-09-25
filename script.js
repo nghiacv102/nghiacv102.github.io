@@ -80,3 +80,58 @@ clearAllButton.addEventListener('click', () => {
             console.error("Error deleting messages:", error);
         });
 });
+let replyingTo = null; // Biến để lưu tin nhắn đang được trả lời
+
+// Function to send message
+function sendMessage() {
+    const message = messageInput.value;
+    if (message) {
+        const messageRef = db.ref('messages').push();
+        messageRef.set({
+            message: message,
+            timestamp: Date.now(),
+            senderName: username,
+            replyingTo: replyingTo // Thêm thông tin tin nhắn đang trả lời
+        });
+        messageInput.value = '';
+        replyingTo = null; // Reset lại
+    }
+}
+
+// Listen for new messages from Firebase
+db.ref('messages').on('child_added', function(snapshot) {
+    const msgData = snapshot.val();
+    const msgElement = document.createElement('div');
+
+    // Xử lý việc hiển thị tin nhắn đang được trả lời
+    if (msgData.replyingTo) {
+        const replyElement = document.createElement('div');
+        replyElement.textContent = "Replying to: " + msgData.replyingTo;
+        replyElement.classList.add('replying-to');
+        msgElement.appendChild(replyElement);
+    }
+
+    if (msgData.senderName === username) {
+        msgElement.classList.add('my-message');
+    } else {
+        msgElement.classList.add('other-message');
+    }
+
+    const senderElement = document.createElement('strong');
+    senderElement.textContent = msgData.senderName + ': ';
+    msgElement.appendChild(senderElement);
+
+    const messageContent = document.createElement('span');
+    messageContent.textContent = msgData.message;
+    msgElement.appendChild(messageContent);
+
+    // Thêm sự kiện click để trả lời tin nhắn
+    msgElement.addEventListener('click', () => {
+        replyingTo = msgData.message; // Lưu tin nhắn để trả lời
+        messageInput.placeholder = "Replying to: " + msgData.message; // Cập nhật placeholder
+    });
+
+    chatBox.appendChild(msgElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
