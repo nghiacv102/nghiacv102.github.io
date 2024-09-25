@@ -20,40 +20,9 @@ const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 
-// Function to get or set username
-function getUsername() {
-    let username = localStorage.getItem('username');
-    if (!username) {
-        username = prompt("Please enter your name:"); // Prompts user to enter their name
-        if (username) { // Check if user entered something
-            localStorage.setItem('username', username); // Save the username in localStorage
-        } else {
-            username = "Anonymous"; // Fallback if user doesn't enter anything
-        }
-    }
-    return username;
-}
-
-const username = getUsername(); // Get username from localStorage or prompt if not set
-
-// Request notification permission
-function requestNotificationPermission() {
-    if (Notification.permission === 'default') {
-        Notification.requestPermission();
-    }
-}
-
-// Notify user of new message
-function notifyUser(message) {
-    if (Notification.permission === 'granted') {
-        const notification = new Notification("New message", {
-            body: message,
-            icon: "path/to/icon.png" // Optional: Path to an icon
-        });
-    }
-}
-
-requestNotificationPermission(); // Request permission for notifications
+// Default usernames
+const username = prompt("Nhập tên của bạn:") || "Anhhh"; // Your default name
+const otherUsername = "Emmm"; // Other user's name
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -78,28 +47,24 @@ function convertEmoticonsToEmoji(message) {
         'XD': '😆'
     };
 
-    // Replace text emoticons with corresponding emoji
     return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, function(match) {
         return emoticonsMap[match] || match;
     });
 }
 
-// Variables to keep track of new messages
-let newMessageCount = 0;
-
 // Function to send message
 function sendMessage() {
     const message = messageInput.value;
     if (message) {
-        const convertedMessage = convertEmoticonsToEmoji(message); // Convert text to emoji
+        const convertedMessage = convertEmoticonsToEmoji(message);
         const messageRef = db.ref('messages').push();
         messageRef.set({
             message: convertedMessage,
             timestamp: Date.now(),
-            senderName: username, // Add sender's name
-            isSender: true // Flag to indicate who sent the message
+            senderName: username,
+            isSender: true
         });
-        messageInput.value = ''; // Clear input after sending
+        messageInput.value = '';
     }
 }
 
@@ -113,11 +78,13 @@ messageInput.addEventListener('keypress', (event) => {
     }
 });
 
-// Listen for new messages from Firebase
+// New message count and title update
+let newMessageCount = 0;
+
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
-    const senderElement = document.createElement('strong'); // Sender's name
+    const senderElement = document.createElement('strong');
     senderElement.textContent = msgData.senderName + ': ';
     msgElement.appendChild(senderElement);
 
@@ -125,28 +92,32 @@ db.ref('messages').on('child_added', function(snapshot) {
     messageContent.textContent = msgData.message;
     msgElement.appendChild(messageContent);
 
-    // Set different style for sender and receiver
-    if (msgData.senderName === username) {
-        msgElement.classList.add('my-message'); // Message from the current user
-    } else {
-        msgElement.classList.add('other-message'); // Message from others
-        notifyUser(msgData.message); // Notify if the message is from another user
-        newMessageCount++; // Increase new message count
-        document.title = `(${newMessageCount}) New Messages`; // Update the tab title
+    if (msgData.senderName !== username) {
+        newMessageCount++;
+        document.title = `(${newMessageCount}) New Messages`; // Update title
     }
 
-    // Append message to chat box
+    if (msgData.senderName === username) {
+        msgElement.classList.add('my-message');
+    } else {
+        msgElement.classList.add('other-message');
+    }
+
     chatBox.appendChild(msgElement);
-    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+// Reset new message count when input is focused
+messageInput.addEventListener('focus', () => {
+    newMessageCount = 0;
+    document.title = "Chat"; // Reset title
 });
 
 // Clear all messages when 'Clear All' button is clicked
 clearAllButton.addEventListener('click', () => {
-    db.ref('messages').remove() // Remove all messages from Firebase
+    db.ref('messages').remove()
       .then(() => {
-          chatBox.innerHTML = ''; // Clear chat box in UI after successful deletion
-          newMessageCount = 0; // Reset new message count
-          document.title = "Chat"; // Reset the title
+          chatBox.innerHTML = '';
       })
       .catch((error) => {
           console.error("Error deleting messages:", error);
@@ -155,12 +126,12 @@ clearAllButton.addEventListener('click', () => {
 
 // Listen for message removal
 db.ref('messages').on('child_removed', function(snapshot) {
-    const messageId = snapshot.key; // Get the key of the deleted message
+    const messageId = snapshot.key;
     const msgElements = chatBox.querySelectorAll('div[data-id]');
 
     msgElements.forEach((msgElement) => {
         if (msgElement.getAttribute('data-id') === messageId) {
-            msgElement.remove(); // Remove the message from the UI
+            msgElement.remove();
         }
     });
 });
