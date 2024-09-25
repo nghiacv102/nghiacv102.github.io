@@ -62,7 +62,7 @@ function sendMessage() {
         messageRef.set({
             message: convertedMessage,
             timestamp: Date.now(),
-            senderName: username // Thêm tên người gửi
+            senderName: username // Ghi nhận tên người gửi
         });
         messageInput.value = ''; // Clear input after sending
     }
