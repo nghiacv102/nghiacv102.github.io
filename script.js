@@ -21,8 +21,10 @@ const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 
 // Default usernames
-const username = prompt("Nhập tên của bạn:") || "Anhhh"; // Your default name
+const username = "Anhhh"; // Your default name
 const otherUsername = "Emmm"; // Other user's name
+
+let replyingToMessageId = null; // ID of the message being replied to
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -62,9 +64,11 @@ function sendMessage() {
             message: convertedMessage,
             timestamp: Date.now(),
             senderName: username,
-            isSender: true
+            isSender: true,
+            replyingTo: replyingToMessageId // Add replyingTo property
         });
-        messageInput.value = '';
+        messageInput.value = ''; // Clear input after sending
+        replyingToMessageId = null; // Reset replying to message ID
     }
 }
 
@@ -78,9 +82,7 @@ messageInput.addEventListener('keypress', (event) => {
     }
 });
 
-// New message count and title update
-let newMessageCount = 0;
-
+// Listen for new messages from Firebase
 db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
@@ -92,25 +94,21 @@ db.ref('messages').on('child_added', function(snapshot) {
     messageContent.textContent = msgData.message;
     msgElement.appendChild(messageContent);
 
-    if (msgData.senderName !== username) {
-        newMessageCount++;
-        document.title = `(${newMessageCount}) New Messages`; // Update title
-    }
-
+    // Set different style for sender and receiver
     if (msgData.senderName === username) {
         msgElement.classList.add('my-message');
     } else {
         msgElement.classList.add('other-message');
     }
 
+    // Add click event to the message for replying
+    msgElement.addEventListener('click', () => {
+        messageInput.value = `Replying to ${msgData.senderName}: ${msgData.message}`;
+        replyingToMessageId = snapshot.key; // Set replying to message ID
+    });
+
     chatBox.appendChild(msgElement);
     chatBox.scrollTop = chatBox.scrollHeight;
-});
-
-// Reset new message count when input is focused
-messageInput.addEventListener('focus', () => {
-    newMessageCount = 0;
-    document.title = "anhiuem"; // Reset title
 });
 
 // Clear all messages when 'Clear All' button is clicked
