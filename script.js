@@ -1,4 +1,4 @@
-// Firebase config (Replace with your Firebase configuration details)
+// Firebase config
 const firebaseConfig = {
     apiKey: "AIzaSyD-XCVoVKwP2d_Fxp5XbkgdFpr1Y-7qtMk",
     authDomain: "linhtinh-8f82a.firebaseapp.com",
@@ -12,7 +12,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database(); // Initialize Realtime Database
+const db = firebase.database();
 
 // Elements
 const chatBox = document.getElementById('chat-box');
@@ -20,49 +20,20 @@ const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 
-// Default username
-const username = "Anhhh"; // Your default name
-
-// Emoji conversion function
-function convertEmoticonsToEmoji(message) {
-    const emoticonsMap = {
-        ':v': '😂',
-        ':D': '😃',
-        ':P': '😜',
-        ':)': '😊',
-        ':(': '🙁',
-        ':O': '😲',
-        ":'(": '😢',
-        '<3': '❤️',
-        ';)': '😉',
-        ':|': '😐',
-        ':S': '😕',
-        ':*': '😘',
-        ':3': '😺',
-        'B-)': '😎',
-        'O:)': '😇',
-        '>:)': '😠',
-        ':x': '🤐',
-        'XD': '😆'
-    };
-
-    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, function(match) {
-        return emoticonsMap[match] || match;
-    });
-}
+// Get username
+let username = prompt("Please enter your name:");
 
 // Function to send message
 function sendMessage() {
-    const message = messageInput.value.trim(); // Trim whitespace
+    const message = messageInput.value;
     if (message) {
-        const convertedMessage = convertEmoticonsToEmoji(message);
         const messageRef = db.ref('messages').push();
         messageRef.set({
-            message: convertedMessage,
+            message: message,
             timestamp: Date.now(),
-            senderName: username // Record sender's name
+            senderName: username
         });
-        messageInput.value = ''; // Clear input after sending
+        messageInput.value = '';
     }
 }
 
@@ -81,7 +52,6 @@ db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
 
-    // Set different styles for sender and receiver
     if (msgData.senderName === username) {
         msgElement.classList.add('my-message');
     } else {
@@ -96,18 +66,17 @@ db.ref('messages').on('child_added', function(snapshot) {
     messageContent.textContent = msgData.message;
     msgElement.appendChild(messageContent);
 
-    // Append message to chat box
     chatBox.appendChild(msgElement);
-    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+    chatBox.scrollTop = chatBox.scrollHeight;
 });
 
 // Clear all messages when 'Clear All' button is clicked
 clearAllButton.addEventListener('click', () => {
     db.ref('messages').remove()
-      .then(() => {
-          chatBox.innerHTML = ''; // Clear chat box in UI after successful deletion
-      })
-      .catch((error) => {
-          console.error("Error deleting messages:", error);
-      });
+        .then(() => {
+            chatBox.innerHTML = '';
+        })
+        .catch((error) => {
+            console.error("Error deleting messages:", error);
+        });
 });
