@@ -24,6 +24,9 @@ const clearAllButton = document.getElementById('clear-all-btn');
 const username = "Anhhh"; // Your default name
 const otherUsername = "Emmm"; // Other user's name
 
+// Variables to track new messages
+let newMessagesCount = 0;
+
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
     const emoticonsMap = {
@@ -87,6 +90,8 @@ db.ref('messages').on('child_added', function(snapshot) {
         msgElement.classList.add('my-message');
     } else {
         msgElement.classList.add('other-message');
+        newMessagesCount++; // Tăng số tin nhắn mới
+        updateTitleWithNewMessages(); // Cập nhật tiêu đề
     }
 
     const senderElement = document.createElement('strong');
@@ -102,11 +107,18 @@ db.ref('messages').on('child_added', function(snapshot) {
     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
 });
 
+// Update the title with new message count
+function updateTitleWithNewMessages() {
+    document.title = `(${newMessagesCount}) emlacuatoi`; // Cập nhật tiêu đề
+}
+
 // Clear all messages when 'Clear All' button is clicked
 clearAllButton.addEventListener('click', () => {
     db.ref('messages').remove()
       .then(() => {
           chatBox.innerHTML = ''; // Clear chat box in UI after successful deletion
+          newMessagesCount = 0; // Reset new messages count
+          document.title = 'emlacuatoi'; // Reset title
       })
       .catch((error) => {
           console.error("Error deleting messages:", error);
