@@ -110,7 +110,7 @@ db.ref('messages').on('child_added', function(snapshot) {
 // Reset new message count when input is focused
 messageInput.addEventListener('focus', () => {
     newMessageCount = 0;
-    document.title = "Chat"; // Reset title
+    document.title = "anhiuem"; // Reset title
 });
 
 // Clear all messages when 'Clear All' button is clicked
