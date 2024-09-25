@@ -1,37 +1,54 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #f2f2f2;
 }
 
 #chat-container {
-    width: 50%;
-    margin: auto;
-    padding: 10px;
+    width: 400px; /* Độ rộng của khung chat */
+    margin: 50px auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
 #chat-box {
-    height: 600px;
+    height: 400px; /* Chiều cao của khung chat */
     overflow-y: auto;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
+    margin-bottom: 10px;
     padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 5px;
 }
 
 .my-message {
-    background-color: #add8e6;
-    color: black;
+    text-align: right;
+    color: white;
+    background-color: #add8e6; /* Màu xanh cho tin nhắn của bạn */
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 5px 0;
-    text-align: left; /* Căn trái */
+    display: inline-block;
+    max-width: 75%;
 }
 
 .other-message {
-    background-color: #d8bfd8; /* Màu tím nhạt cho tin nhắn của đối phương */
+    text-align: left;
     color: black;
+    background-color: #ffcccb; /* Màu hồng cho tin nhắn của đối phương */
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 5px 0;
-    text-align: left; /* Căn trái */
+    display: inline-block;
+    max-width: 75%;
+}
+
+.hidden {
+    display: none;
+}
+
+#new-message-count {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #ff0000; /* Màu đỏ cho thông báo tin nhắn mới */
 }
