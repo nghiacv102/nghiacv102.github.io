@@ -84,6 +84,9 @@ function convertEmoticonsToEmoji(message) {
     });
 }
 
+// Variables to keep track of new messages
+let newMessageCount = 0;
+
 // Function to send message
 function sendMessage() {
     const message = messageInput.value;
@@ -128,6 +131,8 @@ db.ref('messages').on('child_added', function(snapshot) {
     } else {
         msgElement.classList.add('other-message'); // Message from others
         notifyUser(msgData.message); // Notify if the message is from another user
+        newMessageCount++; // Increase new message count
+        document.title = `(${newMessageCount}) New Messages`; // Update the tab title
     }
 
     // Append message to chat box
@@ -140,6 +145,8 @@ clearAllButton.addEventListener('click', () => {
     db.ref('messages').remove() // Remove all messages from Firebase
       .then(() => {
           chatBox.innerHTML = ''; // Clear chat box in UI after successful deletion
+          newMessageCount = 0; // Reset new message count
+          document.title = "Chat"; // Reset the title
       })
       .catch((error) => {
           console.error("Error deleting messages:", error);
