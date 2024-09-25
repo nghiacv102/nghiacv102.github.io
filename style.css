@@ -29,6 +29,7 @@ body {
     margin: 5px;
     border-radius: 10px;
     max-width: 70%; /* Giới hạn chiều rộng tin nhắn */
+    position: relative;
 }
 
 .other-message {
@@ -38,6 +39,11 @@ body {
     margin: 5px;
     border-radius: 10px;
     max-width: 70%; /* Giới hạn chiều rộng tin nhắn */
+    position: relative;
+}
+
+strong {
+    display: block; /* Đưa tên người gửi lên trên tin nhắn */
 }
 
 input[type="text"] {
