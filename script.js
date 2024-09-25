@@ -25,15 +25,16 @@ let username = prompt("Please enter your name:");
 
 // Function to send message
 function sendMessage() {
-    const message = messageInput.value;
+    const message = messageInput.value.trim(); // Trim to remove whitespace
     if (message) {
+        const convertedMessage = convertEmoticonsToEmoji(message);
         const messageRef = db.ref('messages').push();
         messageRef.set({
-            message: message,
+            message: convertedMessage,
             timestamp: Date.now(),
             senderName: username
         });
-        messageInput.value = '';
+        messageInput.value = ''; // Clear input after sending
     }
 }
 
@@ -43,9 +44,11 @@ sendButton.addEventListener('click', sendMessage);
 // Listen for "Enter" key press
 messageInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của Enter
         sendMessage();
     }
 });
+
 
 // Listen for new messages from Firebase
 db.ref('messages').on('child_added', function(snapshot) {
