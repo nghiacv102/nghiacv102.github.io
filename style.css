@@ -23,8 +23,8 @@ body {
 }
 
 .my-message {
-    background-color: #d1ffd1; /* Màu nền cho tin nhắn của bạn */
-    align-self: flex-end; /* Đẩy tin nhắn sang bên phải */
+    background-color: #f0f0f0; /* Màu nền cho tin nhắn của người nhận */
+    align-self: flex-start; /* Đẩy tin nhắn sang bên trái */
     padding: 10px;
     margin: 5px;
     border-radius: 10px;
@@ -32,8 +32,8 @@ body {
 }
 
 .other-message {
-    background-color: #f0f0f0; /* Màu nền cho tin nhắn của người khác */
-    align-self: flex-start; /* Đẩy tin nhắn sang bên trái */
+    background-color: #d1ffd1; /* Màu nền cho tin nhắn của người gửi */
+    align-self: flex-end; /* Đẩy tin nhắn sang bên phải */
     padding: 10px;
     margin: 5px;
     border-radius: 10px;
