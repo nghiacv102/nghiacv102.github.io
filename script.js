@@ -19,10 +19,14 @@ const chatBox = document.getElementById('chat-box');
 const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
+const replyMessageDisplay = document.getElementById('reply-message'); // Phần tử hiển thị tin nhắn trả lời
 
 // Default usernames
 const username = "Anhhh"; // Your default name
 const otherUsername = "Emmm"; // Other user's name
+
+// Biến để lưu thông tin tin nhắn đang trả lời
+let replyingTo = null;
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -61,9 +65,12 @@ function sendMessage() {
         messageRef.set({
             message: convertedMessage,
             timestamp: Date.now(),
-            senderName: username // Ghi nhận tên người gửi
+            senderName: username,
+            replyingTo: replyingTo // Lưu thông tin tin nhắn đang trả lời
         });
         messageInput.value = ''; // Clear input after sending
+        replyingTo = null; // Reset sau khi gửi
+        replyMessageDisplay.textContent = ''; // Xóa tin nhắn trả lời hiển thị
     }
 }
 
@@ -82,11 +89,24 @@ db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
 
+    // Hiển thị tin nhắn trả lời nếu có
+    if (msgData.replyingTo) {
+        const replyInfo = document.createElement('div');
+        replyInfo.textContent = `Replying to: ${msgData.replyingTo}`;
+        replyInfo.style.fontStyle = 'italic';
+        msgElement.appendChild(replyInfo);
+    }
+
     // Set different styles for sender and receiver
     if (msgData.senderName === username) {
         msgElement.classList.add('my-message');
     } else {
         msgElement.classList.add('other-message');
+        // Thêm sự kiện click để trả lời tin nhắn
+        msgElement.addEventListener('click', () => {
+            replyingTo = msgData.message; // Ghi nhận tin nhắn cần trả lời
+            replyMessageDisplay.textContent = `Replying to: ${msgData.message}`;
+        });
     }
 
     const senderElement = document.createElement('strong');
