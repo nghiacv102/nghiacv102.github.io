@@ -22,7 +22,19 @@ body {
     overflow-y: auto;
     padding: 10px;
     border-bottom: 1px solid #ddd;
+
+/* Media Query cho thiết bị di động */
+@media (max-width: 768px) {
+    #chat-container {
+        width: 95%; /* Chiều rộng hộp chat trên điện thoại */
+        max-width: none; /* Không giới hạn chiều rộng tối đa */
+    }
+
+    #chat-box {
+        max-height: 300px; /* Chiều cao tối đa cho điện thoại */
+    }
 }
+
 
 .my-message {
     background-color: rgba(173, 216, 230, 0.1); /* Màu xanh nhạt hơn */
@@ -73,16 +85,3 @@ body {
     background-size: cover; /* Làm cho ảnh phủ đầy màn hình */
     background-position: center; /* Đặt ảnh ở giữa */
 }
-
-/* Media Query cho thiết bị di động */
-@media (max-width: 768px) {
-    #chat-container {
-        width: 95%; /* Chiều rộng hộp chat trên điện thoại */
-        max-width: none; /* Không giới hạn chiều rộng tối đa */
-    }
-
-    #chat-box {
-        max-height: 300px; /* Chiều cao tối đa cho điện thoại */
-    }
-}
-
