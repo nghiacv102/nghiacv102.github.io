@@ -52,19 +52,20 @@ function convertEmoticonsToEmoji(message) {
 }
 
 
-// Function to send message
 function sendMessage() {
     const message = messageInput.value;
     if (message) {
+        const convertedMessage = convertEmoticonsToEmoji(message); // Thêm dòng này
         const messageRef = db.ref('messages').push();
         messageRef.set({
-            message: message,
+            message: convertedMessage, // Sử dụng message đã chuyển đổi
             timestamp: Date.now(),
             senderName: username
         });
         messageInput.value = '';
     }
 }
+
 
 // Listen for "Send" button click
 sendButton.addEventListener('click', sendMessage);
