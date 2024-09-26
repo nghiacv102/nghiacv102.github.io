@@ -23,6 +23,35 @@ const clearAllButton = document.getElementById('clear-all-btn');
 // Get username
 let username = prompt("Please enter your name:");
 
+// Emoji conversion function
+function convertEmoticonsToEmoji(message) {
+    const emoticonsMap = {
+        ':v': '😂',
+        ':D': '😃',
+        ':P': '😜',
+        ':)': '😊',
+        ':(': '🙁',
+        ':O': '😲',
+        ":'(": '😢',
+        '<3': '❤️',
+        ';)': '😉',
+        ':|': '😐',
+        ':S': '😕',
+        ':*': '😘',
+        ':3': '😺',
+        'B-)': '😎',
+        'O:)': '😇',
+        '>:)': '😠',
+        ':x': '🤐',
+        'XD': '😆'
+    };
+
+    return message.replace(/:\w+|<3|;\)|B-\)|O:\)|XD|>\:\)|:\(/g, function(match) {
+        return emoticonsMap[match] || match;
+    });
+}
+
+
 // Function to send message
 function sendMessage() {
     const message = messageInput.value;
