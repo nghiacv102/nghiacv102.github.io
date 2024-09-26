@@ -63,3 +63,19 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+@media (max-width: 600px) {
+    #chat-container {
+        width: 90%; /* Đặt độ rộng cho box chat khi trên điện thoại */
+        right: 5%; /* Căn giữa với khoảng cách bên phải */
+        top: 20px; /* Điều chỉnh khoảng cách từ trên cùng */
+    }
+
+    #chat-box {
+        height: 300px; /* Điều chỉnh chiều cao box chat cho điện thoại */
+    }
+
+    input[type="text"] {
+        width: calc(100% - 80px); /* Đảm bảo kích thước input phù hợp */
+    }
+}
