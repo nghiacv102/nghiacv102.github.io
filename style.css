@@ -74,5 +74,15 @@ body {
     background-position: center; /* Đặt ảnh ở giữa */
 }
 
+/* Media Query cho thiết bị di động */
+@media (max-width: 768px) {
+    #chat-container {
+        width: 95%; /* Chiều rộng hộp chat trên điện thoại */
+        max-width: none; /* Không giới hạn chiều rộng tối đa */
+    }
 
+    #chat-box {
+        max-height: 300px; /* Chiều cao tối đa cho điện thoại */
+    }
+}
 
