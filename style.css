@@ -25,7 +25,7 @@ body {
 }
 
 .my-message {
-    background-color: rgba(173, 216, 230, 0.3); /* Màu xanh nhạt hơn */
+    background-color: rgba(173, 216, 230, 0.1); /* Màu xanh nhạt hơn */
     color: #000; /* Màu chữ */
     border-radius: 10px;
     padding: 10px;
@@ -34,7 +34,7 @@ body {
 }
 
 .other-message {
-    background-color: rgba(255, 182, 193, 0.3); /* Màu hồng nhạt hơn */
+    background-color: rgba(255, 182, 193, 0.1); /* Màu hồng nhạt hơn */
     color: #000; /* Màu chữ */
     border-radius: 10px;
     padding: 10px;
