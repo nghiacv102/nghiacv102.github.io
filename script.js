@@ -1,4 +1,4 @@
-// Firebase config
+// Firebase config (Replace with your Firebase configuration details)
 const firebaseConfig = {
     apiKey: "AIzaSyD-XCVoVKwP2d_Fxp5XbkgdFpr1Y-7qtMk",
     authDomain: "linhtinh-8f82a.firebaseapp.com",
@@ -12,7 +12,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db = firebase.database(); // Initialize Realtime Database
 
 // Elements
 const chatBox = document.getElementById('chat-box');
@@ -20,8 +20,9 @@ const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 
-// Get username
-let username = prompt("Please enter your name:");
+// Default usernames
+const username = "Anhhh"; // Your default name
+const otherUsername = "Emmm"; // Other user's name
 
 // Emoji conversion function
 function convertEmoticonsToEmoji(message) {
@@ -51,18 +52,18 @@ function convertEmoticonsToEmoji(message) {
     });
 }
 
-
 // Function to send message
 function sendMessage() {
     const message = messageInput.value;
     if (message) {
+        const convertedMessage = convertEmoticonsToEmoji(message);
         const messageRef = db.ref('messages').push();
         messageRef.set({
-            message: message,
+            message: convertedMessage,
             timestamp: Date.now(),
-            senderName: username
+            senderName: username // Ghi nhận tên người gửi
         });
-        messageInput.value = '';
+        messageInput.value = ''; // Clear input after sending
     }
 }
 
@@ -81,6 +82,7 @@ db.ref('messages').on('child_added', function(snapshot) {
     const msgData = snapshot.val();
     const msgElement = document.createElement('div');
 
+    // Set different styles for sender and receiver
     if (msgData.senderName === username) {
         msgElement.classList.add('my-message');
     } else {
@@ -95,17 +97,18 @@ db.ref('messages').on('child_added', function(snapshot) {
     messageContent.textContent = msgData.message;
     msgElement.appendChild(messageContent);
 
+    // Append message to chat box
     chatBox.appendChild(msgElement);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
 });
 
 // Clear all messages when 'Clear All' button is clicked
 clearAllButton.addEventListener('click', () => {
     db.ref('messages').remove()
-        .then(() => {
-            chatBox.innerHTML = '';
-        })
-        .catch((error) => {
-            console.error("Error deleting messages:", error);
-        });
+      .then(() => {
+          chatBox.innerHTML = ''; // Clear chat box in UI after successful deletion
+      })
+      .catch((error) => {
+          console.error("Error deleting messages:", error);
+      });
 });
