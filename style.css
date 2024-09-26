@@ -13,7 +13,7 @@ html, body {
     right: 5px; /* Khoảng cách từ bên phải */
     top: 400px; /* Khoảng cách từ trên cùng */
     width: 400px; /* Đặt độ rộng cho box chat */
-    background-color: rgba(255, 255, 255, 0.9); /* Màu nền với độ trong suốt */
+    background-color: rgba(255, 255, 255, 0.5); /* Màu nền với độ trong suốt */
     border-radius: 8px; /* Bo tròn góc */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng */
     padding: 10px; /* Khoảng cách bên trong */
@@ -27,7 +27,7 @@ html, body {
 }
 
 .my-message {
-    background-color: rgba(173, 216, 230, 0.5); /* Màu xanh nhạt hơn */
+    background-color: rgba(173, 216, 230, 0.3); /* Màu xanh nhạt hơn */
     color: #000; /* Màu chữ */
     border-radius: 10px;
     padding: 10px;
@@ -36,7 +36,7 @@ html, body {
 }
 
 .other-message {
-    background-color: rgba(255, 182, 193, 0.5); /* Màu hồng nhạt hơn */
+    background-color: rgba(255, 182, 193, 0.3); /* Màu hồng nhạt hơn */
     color: #000; /* Màu chữ */
     border-radius: 10px;
     padding: 10px;
@@ -72,7 +72,7 @@ button:hover {
     }
 
     #chat-box {
-        height: 300px; /* Điều chỉnh chiều cao box chat cho điện thoại */
+        height: 100px; /* Điều chỉnh chiều cao box chat cho điện thoại */
     }
 
     input[type="text"] {
