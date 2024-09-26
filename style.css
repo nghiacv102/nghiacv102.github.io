@@ -57,7 +57,7 @@ button:hover {
     background-color: #0056b3;
 }
 body {
-    background-image: url('web.png'); /* Thay 'ten-anh.jpg' bằng tên file hình ảnh của bạn */
+    background-image: url('web.png'); /* Thay 'background.png' bằng tên file của bạn */
     background-size: cover; /* Để hình ảnh trải đều */
     background-position: center; /* Căn giữa hình ảnh */
     background-repeat: no-repeat; /* Không lặp lại hình ảnh */
