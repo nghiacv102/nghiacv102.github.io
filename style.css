@@ -59,9 +59,15 @@ button {
 button:hover {
     background-color: #0056b3;
 }
-body {
-    background-image: url('web.png'); /* Thay 'background.png' bằng tên file của bạn */
-    background-size: cover; /* Để hình ảnh trải đều */
-    background-position: center; /* Căn giữa hình ảnh */
-    background-repeat: no-repeat; /* Không lặp lại hình ảnh */
+html, body {
+    height: 100%; /* Đảm bảo chiều cao 100% cho html và body */
+    margin: 0; /* Bỏ margin mặc định */
 }
+
+body {
+    background-image: url('web.png'); /* Thay thế bằng tên file ảnh của bạn */
+    background-repeat: no-repeat; /* Không lặp lại ảnh */
+    background-size: cover; /* Làm cho ảnh phủ đầy màn hình */
+    background-position: center; /* Đặt ảnh ở giữa */
+}
+
