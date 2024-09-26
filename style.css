@@ -8,7 +8,7 @@ body {
 #chat-container {
     position: fixed; /* Hoặc absolute, tùy thuộc vào thiết kế của bạn */
     right: 5px; /* Khoảng cách từ bên phải */
-    top: 370px; /* Khoảng cách từ trên cùng */
+    top: 400px; /* Khoảng cách từ trên cùng */
     width: 400px; /* Đặt độ rộng cho box chat */
     background-color: rgba(255, 255, 255, 0.9); /* Màu nền với độ trong suốt */
     border-radius: 8px; /* Bo tròn góc */
