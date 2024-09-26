@@ -59,15 +59,11 @@ button {
 button:hover {
     background-color: #0056b3;
 }
-html, body {
-    height: 100%; /* Đảm bảo chiều cao 100% cho html và body */
-    margin: 0; /* Bỏ margin mặc định */
+body {
+    background-image: url('web.png');
+    background-size: cover; /* Hoặc contain nếu cần */
+    background-position: center bottom; /* Căn giữa theo chiều ngang và xuống dưới */
+    background-repeat: no-repeat; /* Không lặp lại hình nền */
 }
 
-body {
-    background-image: url('web.png'); /* Thay thế bằng tên file ảnh của bạn */
-    background-repeat: no-repeat; /* Không lặp lại ảnh */
-    background-size: cover; /* Làm cho ảnh phủ đầy màn hình */
-    background-position: center; /* Đặt ảnh ở giữa */
-}
 
