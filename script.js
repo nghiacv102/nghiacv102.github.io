@@ -21,10 +21,24 @@ const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 const replyMessageDisplay = document.getElementById('reply-message'); // Phần tử hiển thị tin nhắn trả lời
 
-// Default usernames
-const username = "Anhhhhhhhhh"; // Tên mới của bạn
-const otherUsername = "Embéeeeeeeee"; // Tên mới của đối phương
+// Get username from localStorage or prompt user to set it
+let username = localStorage.getItem('username') || "";
 
+// Nếu chưa có tên, hiển thị hộp nhập tên và lưu vào localStorage
+if (!username) {
+    usernameInput.style.display = 'block'; // Hiển thị hộp nhập tên
+    setNameButton.addEventListener('click', () => {
+        username = usernameInput.value;
+        if (username) {
+            localStorage.setItem('username', username); // Lưu tên vào localStorage
+            usernameInput.style.display = 'none'; // Ẩn hộp nhập tên sau khi đặt
+        } else {
+            alert("Please enter a valid name.");
+        }
+    });
+} else {
+    usernameInput.style.display = 'none'; // Ẩn hộp nhập tên nếu tên đã được lưu
+}
 
 
 // Biến để lưu thông tin tin nhắn đang trả lời
