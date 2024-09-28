@@ -37,14 +37,17 @@ if (!username) {
     // Lắng nghe sự kiện khi người dùng nhấn xác nhận tên
     setNameButton.addEventListener('click', function() {
         const inputName = usernameInput.value;
-        if (inputName) {
-            username = inputName;
-            localStorage.setItem('username', username); // Lưu tên vào local storage
-            alert(`Tên của bạn đã được đặt là: ${username}`);
-            nameInputSection.style.display = 'none'; // Ẩn phần nhập tên sau khi người dùng xác nhận
+
+        // Kiểm tra nếu người dùng không nhập gì thì gán tên mặc định là 'anhiubeeee'
+        if (!inputName) {
+            username = 'anhiubeeee'; // Tên mặc định
         } else {
-            alert('Vui lòng nhập tên của bạn!');
+            username = inputName;
         }
+
+        localStorage.setItem('username', username); // Lưu tên vào Local Storage
+        alert(`Tên của bạn đã được đặt là: ${username}`);
+        nameInputSection.style.display = 'none'; // Ẩn phần nhập tên sau khi người dùng xác nhận
     });
 } else {
     // Nếu đã có tên trong Local Storage, ẩn phần nhập tên
