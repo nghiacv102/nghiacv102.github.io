@@ -20,11 +20,33 @@ const messageInput = document.getElementById('message');
 const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 const replyMessageDisplay = document.getElementById('reply-message'); // Phần tử hiển thị tin nhắn trả lời
+const setNameButton = document.getElementById('set-name-btn');
+const usernameInput = document.getElementById('username');
+const nameInputSection = document.getElementById('name-input-section');
 
-// Default usernames
-const username = "Anhhhhhhhhh"; // Tên mới của bạn
-const otherUsername = "Embéeeeeeeee"; // Tên mới của đối phương
+// Kiểm tra xem đã có tên trong Local Storage chưa
+let username = localStorage.getItem('username');
 
+// Nếu chưa có tên, yêu cầu người dùng nhập tên
+if (!username) {
+    nameInputSection.style.display = 'block'; // Hiển thị phần nhập tên
+
+    // Lắng nghe sự kiện khi người dùng nhấn xác nhận tên
+    setNameButton.addEventListener('click', function() {
+        const inputName = usernameInput.value;
+        if (inputName) {
+            username = inputName;
+            localStorage.setItem('username', username); // Lưu tên vào local storage
+            alert(`Tên của bạn đã được đặt là: ${username}`);
+            nameInputSection.style.display = 'none'; // Ẩn phần nhập tên sau khi người dùng xác nhận
+        } else {
+            alert('Vui lòng nhập tên của bạn!');
+        }
+    });
+} else {
+    // Nếu đã có tên trong Local Storage, ẩn phần nhập tên
+    nameInputSection.style.display = 'none';
+}
 // Biến để lưu thông tin tin nhắn đang trả lời
 let replyingTo = null;
 
