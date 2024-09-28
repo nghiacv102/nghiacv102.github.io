@@ -22,8 +22,8 @@ const clearAllButton = document.getElementById('clear-all-btn');
 const replyMessageDisplay = document.getElementById('reply-message'); // Phần tử hiển thị tin nhắn trả lời
 
 // Default usernames
-const username = "Anhhh"; // Your default name
-const otherUsername = "Emmm"; // Other user's name
+const username = "Anh"; // Your default name
+const otherUsername = "Em"; // Other user's name
 
 // Biến để lưu thông tin tin nhắn đang trả lời
 let replyingTo = null;
