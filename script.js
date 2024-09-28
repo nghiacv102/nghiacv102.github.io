@@ -21,31 +21,6 @@ const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 const replyMessageDisplay = document.getElementById('reply-message'); // Phần tử hiển thị tin nhắn trả lời
 
-// Prompt for usernames when page loads and save them in Firebase
-let username = prompt("Please enter your name:");
-let otherUsername = prompt("Please enter the other person's name:");
-
-if (!username) {
-    username = "Anonymous"; // Default if no username is provided
-}
-if (!otherUsername) {
-    otherUsername = "Unknown"; // Default if no name is provided for the other person
-}
-
-// Save both usernames in Firebase for synchronization
-db.ref('usernames').set({
-    username: username,
-    otherUsername: otherUsername
-});
-
-// Function to update usernames when changed by either person
-db.ref('usernames').on('value', (snapshot) => {
-    const userData = snapshot.val();
-    if (userData) {
-        username = userData.username;
-        otherUsername = userData.otherUsername;
-    }
-});
 
 
 
