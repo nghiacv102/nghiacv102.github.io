@@ -27,9 +27,7 @@ if (!username) {
     username = "Anonymous"; // Default if no username is provided
 }
 
-// Default usernames
-const username = "Anhhh"; // Tên mới của bạn
-const otherUsername = "Emmm"; // Tên mới của đối phương
+
 
 
 
