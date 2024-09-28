@@ -1,3 +1,6 @@
+// Xoá Local Storage mỗi lần load trang
+localStorage.removeItem('username'); // Xoá tên đã lưu
+
 // Firebase config (Replace with your Firebase configuration details)
 const firebaseConfig = {
     apiKey: "AIzaSyD-XCVoVKwP2d_Fxp5XbkgdFpr1Y-7qtMk",
