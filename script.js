@@ -21,10 +21,16 @@ const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 const replyMessageDisplay = document.getElementById('reply-message'); // Phần tử hiển thị tin nhắn trả lời
 
-// Default usernames
-const username = "Anhhh"; // Tên mới của bạn
-const otherUsername = "Emmm"; // Tên mới của đối phương
+// Prompt for usernames when page loads
+let username = prompt("Please enter your name:", "Anhhh");
+let otherUsername = prompt("Please enter the other person's name:", "Emmm");
 
+if (!username) {
+    username = "Anonymous"; // Default if no username is provided
+}
+if (!otherUsername) {
+    otherUsername = "Unknown"; // Default if no name is provided for the other person
+}
 // Biến để lưu thông tin tin nhắn đang trả lời
 let replyingTo = null;
 
