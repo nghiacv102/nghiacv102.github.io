@@ -21,7 +21,7 @@ const sendButton = document.getElementById('send-btn');
 const clearAllButton = document.getElementById('clear-all-btn');
 const replyMessageDisplay = document.getElementById('reply-message'); // Phần tử hiển thị tin nhắn trả lời
 
-// Prompt for usernames when page loads
+// Prompt for usernames when page loads and save them in Firebase
 let username = prompt("Please enter your name:", "Anhhh");
 let otherUsername = prompt("Please enter the other person's name:", "Emmm");
 
@@ -31,6 +31,12 @@ if (!username) {
 if (!otherUsername) {
     otherUsername = "Unknown"; // Default if no name is provided for the other person
 }
+
+// Save both usernames in Firebase for synchronization
+db.ref('usernames').set({
+    username: username,
+    otherUsername: otherUsername
+});
 // Biến để lưu thông tin tin nhắn đang trả lời
 let replyingTo = null;
 
